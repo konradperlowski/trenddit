@@ -1,9 +1,9 @@
-package trenddit.repository;
+package trenddit.dao;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import trenddit.bean.SubredditRanking;
+import trenddit.entity.SubredditRanking;
 
 import java.util.List;
 

@@ -1,13 +1,18 @@
-package trenddit.bean;
+package trenddit.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
+import java.util.Date;
 
 @Entity
-public class BestSubredditWeekly {
+@IdClass(BestSubredditDailyPK.class)
+public class BestSubredditDaily {
     @Id
     private String name;
     private Integer number;
+    @Id
+    private Date date;
 
     public String getName() {
         return name;
@@ -23,5 +28,13 @@ public class BestSubredditWeekly {
 
     public void setNumber(Integer number) {
         this.number = number;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

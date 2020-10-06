@@ -1,7 +1,7 @@
-package trenddit.repository;
+package trenddit.dao;
 
 import org.springframework.data.repository.CrudRepository;
-import trenddit.bean.BestSubredditAllTime;
+import trenddit.entity.BestSubredditAllTime;
 
 public interface BestSubredditAllTimeRepository extends CrudRepository<BestSubredditAllTime, Integer> {
 }

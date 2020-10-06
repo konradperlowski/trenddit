@@ -1,4 +1,4 @@
-package trenddit.bean;
+package trenddit.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

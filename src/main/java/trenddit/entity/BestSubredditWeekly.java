@@ -1,10 +1,10 @@
-package trenddit.bean;
+package trenddit.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class BestSubredditMonthly {
+public class BestSubredditWeekly {
     @Id
     private String name;
     private Integer number;

@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import trenddit.bean.*;
+import trenddit.entity.*;
 import trenddit.controller.bean.SubredditGrowth;
-import trenddit.repository.*;
+import trenddit.dao.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

@@ -1,16 +1,16 @@
-package trenddit.bean;
+package trenddit.entity;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-public class SubredditRankingPK implements Serializable {
-    protected String name;
-    protected Date date;
+public class BestSubredditDailyPK implements Serializable {
+    private String name;
+    private Date date;
 
-    public SubredditRankingPK() {}
+    public BestSubredditDailyPK () {}
 
-    public SubredditRankingPK(String name, Date date) {
+    public BestSubredditDailyPK(String name, Date date) {
         this.name = name;
         this.date = date;
     }
@@ -19,7 +19,7 @@ public class SubredditRankingPK implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SubredditRankingPK that = (SubredditRankingPK) o;
+        BestSubredditDailyPK that = (BestSubredditDailyPK) o;
         return Objects.equals(name, that.name) &&
                 Objects.equals(date, that.date);
     }
