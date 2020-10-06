@@ -1,9 +1,6 @@
 package trenddit.bean;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import java.io.Serializable;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -16,6 +13,7 @@ public class SubredditRanking {
     private Integer posts;
     private Integer comments;
     @Id
+    @Temporal(TemporalType.DATE)
     private Date date;
 
     public String getName() {

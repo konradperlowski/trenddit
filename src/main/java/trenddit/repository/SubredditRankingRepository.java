@@ -1,7 +1,23 @@
 package trenddit.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import trenddit.bean.SubredditRanking;
 
+import java.util.List;
+
 public interface SubredditRankingRepository extends CrudRepository<SubredditRanking, Integer> {
+
+    @Query(value = "SELECT ((SELECT subscribers FROM subreddit_ranking WHERE date = :today AND name = :name) - " +
+            "(SELECT subscribers FROM subreddit_ranking WHERE date = :date_from AND name = :name)) / :number",
+            nativeQuery = true)
+    Integer findSubredditGrowth(
+            @Param("name") String name,
+            @Param("today") String today,
+            @Param("date_from") String from,
+            @Param("number") Integer numberOfDays);
+
+    @Query("select distinct name from SubredditRanking")
+    List<String> findDistinctName();
 }
