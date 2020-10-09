@@ -1,30 +1,37 @@
 <nav th:fragment="common-navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="space"></div>
-    <a class="navbar-brand" href="#">Trenddit</a>
+    <a class="navbar-brand" href="/">Trenddit</a>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#">Fastest growing</a>
+                <a class="nav-link" href="/top/growing">Fastest growing</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#">Top comments</a>
+                <a class="nav-link" href="/top/comments">Top comments</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#">Top posts</a>
+                <a class="nav-link" href="/top/posts">Top posts</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#">Top subreddits</a>
+                <a class="nav-link" href="/top/subreddits">Top subreddits</a>
             </li>
         </ul>
 
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search for subreddit" aria-label="Search">
-            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+        <form class="form-inline my-2 my-lg-0" onsubmit="return false">
+            <input id="subreddit-input" class="form-control mr-sm-2" type="search" placeholder="Search for subreddit"
+                   aria-label="Search">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" onclick="goToSubreddit()">Search</button>
         </form>
+
+        <script>
+            function goToSubreddit() {
+                window.location.href = "/subreddit/" + document.getElementById("subreddit-input").value;
+            }
+        </script>
     </div>
     <div class="space"></div>
 </nav>
