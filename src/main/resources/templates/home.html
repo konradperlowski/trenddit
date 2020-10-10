@@ -4,7 +4,11 @@
 <body>
 <nav th:replace="common/navbar :: common-navbar"></nav>
 <div class="container">
-    Home page
+    <h2 class="mt-4 mb-4">Top subreddits by number of posts in top r/all</h2>
+    <canvas id="top-subreddits" class="data-chart"></canvas>
+    <script>
+        drawTopSubredditChart()
+    </script>
 </div>
 </body>
 </html>

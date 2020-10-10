@@ -5,3 +5,8 @@
 .container {
     margin-left: 250px;
 }
+
+.data-chart {
+    max-width: 800px;
+    max-height: 500px;
+}
