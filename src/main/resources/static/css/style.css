@@ -3,10 +3,11 @@
 }
 
 .container {
-    margin-left: 250px;
+    margin: auto;
+    width: 900px;
 }
 
 .data-chart {
-    max-width: 800px;
+    max-width: 900px;
     max-height: 500px;
 }

@@ -5,6 +5,18 @@
 <nav th:replace="common/navbar :: common-navbar"></nav>
 <div class="container">
     <h2 class="mt-4 mb-4">Top subreddits by number of posts in top r/all</h2>
+
+    <label class="float-right">
+        <select class="form-control form-control-sm" id="periodOfTimeSelect"
+                onchange="drawTopSubredditChart()">
+            <option value="day">Day</option>
+            <option value="week" selected="selected">Week</option>
+            <option value="month">Month</option>
+            <option value="year">Year</option>
+            <option value="all-time">All time</option>
+        </select>
+    </label>
+
     <canvas id="top-subreddits" class="data-chart"></canvas>
     <script>
         drawTopSubredditChart()
