@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SubredditController {
 
     @GetMapping(value = "/{subreddit}")
-    public String getSubreddit(@PathVariable String subreddit, Model model) {
+    public String subredditHome(@PathVariable String subreddit, Model model) {
         model.addAttribute("subreddit", subreddit);
         return "subreddit/home";
     }

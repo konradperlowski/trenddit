@@ -1,11 +1,7 @@
 package trenddit.rest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import trenddit.bean.SubredditGrowth;
 import trenddit.service.SubredditRankingService;
 
@@ -27,7 +23,8 @@ public class SubredditGrowthRest {
     }
 
     @RequestMapping(value = "/{days}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<SubredditGrowth> getSubredditsGrowth(@PathVariable Integer days) {
-        return subredditRankingService.getSubredditsGrowth(days);
+    public List<SubredditGrowth> getSubredditsGrowth(@PathVariable Integer days,
+                                                     @RequestParam(required = false) Integer limit) {
+        return subredditRankingService.getSubredditsGrowth(days, limit);
     }
 }

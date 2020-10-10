@@ -32,3 +32,9 @@
 .table-link:hover {
     text-decoration: none;
 }
+
+.growth-number-up {
+    color: #31A24C;
+    text-align: center;
+    width: 100px;
+}

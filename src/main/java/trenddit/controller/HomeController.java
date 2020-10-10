@@ -18,6 +18,9 @@ public class HomeController {
     public String home(Model model) {
         model.addAttribute("mostCommented", subredditRankingService.getTodayMostCommented());
         model.addAttribute("mostPosted", subredditRankingService.getTodayMostPosted());
+        model.addAttribute("growthToday", subredditRankingService.getSubredditsGrowth(1, 15));
+        model.addAttribute("growthWeek", subredditRankingService.getSubredditsGrowth(7, 15));
+        model.addAttribute("growthMonth", subredditRankingService.getSubredditsGrowth(30, 15));
         return "home";
     }
 }

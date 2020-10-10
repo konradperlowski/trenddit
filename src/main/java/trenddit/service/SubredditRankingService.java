@@ -40,12 +40,14 @@ public class SubredditRankingService {
         return subredditGrowth;
     }
 
-    public List<SubredditGrowth> getSubredditsGrowth(Integer days) {
+    public List<SubredditGrowth> getSubredditsGrowth(Integer days, Integer limit) {
         List<SubredditGrowth> subredditGrowthList = new ArrayList<>();
 
         subredditRankingRepository.findDistinctName()
                 .forEach(subreddit -> subredditGrowthList.add(getSubredditGrowth(subreddit, days)));
 
+        if (limit != null)
+            return subredditGrowthList.stream().sorted().limit(limit).collect(Collectors.toList());
         return subredditGrowthList.stream().sorted().collect(Collectors.toList());
     }
 

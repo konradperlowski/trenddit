@@ -72,6 +72,33 @@
             </table>
         </div>
     </div>
+    <h2 class="mb-4">Fastest growing</h2>
+    <div class="mb-5">
+        <table class="table table-hover table-bordered table-striped">
+            <thead>
+            <tr>
+                <th colspan="2" style="width: 300px">Today</th>
+                <th colspan="2" style="width: 300px">Week</th>
+                <th colspan="2" style="width: 300px">Month</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="subreddit, iter: ${growthToday}">
+                <td th:text="'r/' + ${subreddit.name}"></td>
+                <td th:text="${subreddit.growth}" class="growth-number-up"></td>
+                <td th:text="'r/' + ${growthWeek[__${iter.index}__].name}"></td>
+                <td th:text="${growthWeek[__${iter.index}__].growth}" class="growth-number-up"></td>
+                <td th:text="'r/' + ${growthMonth[__${iter.index}__].name}"></td>
+                <td th:text="${growthMonth[__${iter.index}__].growth}" class="growth-number-up"></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="6" class="show-more-button"><a class="table-link" href="/top/posts">Show more</a></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
 </body>
 </html>
