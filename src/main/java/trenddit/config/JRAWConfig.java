@@ -1,7 +1,6 @@
 package trenddit.config;
 
 import net.dean.jraw.RedditClient;
-import net.dean.jraw.http.NetworkAdapter;
 import net.dean.jraw.http.OkHttpNetworkAdapter;
 import net.dean.jraw.http.UserAgent;
 import net.dean.jraw.oauth.Credentials;
