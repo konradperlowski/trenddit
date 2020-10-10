@@ -23,8 +23,8 @@ async function drawTopSubredditChart() {
             datasets: [{
                 label: "Number of posts",
                 data: values,
-                backgroundColor: 'rgba(2, 36, 255, 0.3)',
-                borderColor: 'rgba(2, 36, 255, 0.6)',
+                backgroundColor: 'rgba(2, 36, 255, 0.5)',
+                borderColor: 'rgba(2, 36, 255, 1)',
                 borderWidth: 1
             }]
         },

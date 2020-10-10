@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import trenddit.entity.SubredditRanking;
 import trenddit.entity.SubredditRankingPK;
 
+import java.util.Date;
 import java.util.List;
 
 public interface SubredditRankingRepository extends CrudRepository<SubredditRanking, SubredditRankingPK> {
@@ -21,4 +22,8 @@ public interface SubredditRankingRepository extends CrudRepository<SubredditRank
 
     @Query("select distinct name from SubredditRanking")
     List<String> findDistinctName();
+
+    List<SubredditRanking> findTop10ByDateOrderByCommentsDesc(Date date);
+
+    List<SubredditRanking> findTop10ByDateOrderByPostsDesc(Date date);
 }

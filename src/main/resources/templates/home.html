@@ -17,10 +17,61 @@
         </select>
     </label>
 
-    <canvas id="top-subreddits" class="data-chart"></canvas>
+    <canvas id="top-subreddits" class="data-chart mb-5"></canvas>
     <script>
         drawTopSubredditChart()
     </script>
+
+    <div class="parent mb-5">
+        <div class="small-container mr-4">
+            <h2 class="mb-4">Top commented today</h2>
+            <table class="table table-hover table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Subreddit</th>
+                    <th scope="col">Number of comments</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="subreddit: ${mostCommented}" class="clickable-row" th:data="${subreddit.name}"
+                    th:onclick="javascript:rowClicked(this.getAttribute('data'));">
+                    <td th:text="'r/' + ${subreddit.name}"></td>
+                    <td th:text="${subreddit.comments}"></td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="2" class="show-more-button"><a class="table-link" href="/top/comments">Show more</a>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="small-container">
+            <h2 class="mb-4">Top posted today</h2>
+            <table class="table table-hover table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Subreddit</th>
+                    <th scope="col">Number of posts</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="subreddit: ${mostPosted}" class="clickable-row" th:data="${subreddit.name}"
+                    th:onclick="javascript:rowClicked(this.getAttribute('data'));">
+                    <td th:text="'r/' + ${subreddit.name}"></td>
+                    <td th:text="${subreddit.posts}"></td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="2" class="show-more-button"><a class="table-link" href="/top/posts">Show more</a></td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
 </div>
 </body>
 </html>

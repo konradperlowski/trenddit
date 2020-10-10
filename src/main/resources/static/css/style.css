@@ -11,3 +11,24 @@
     max-width: 900px;
     max-height: 500px;
 }
+
+.clickable-row:hover {
+    cursor: pointer;
+}
+
+.parent {
+    display: flex;
+}
+
+.small-container {
+    width: 425px;
+}
+
+.show-more-button {
+    color: dodgerblue;
+    text-align: center;
+}
+
+.table-link:hover {
+    text-decoration: none;
+}
