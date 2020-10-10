@@ -1,8 +1,6 @@
 package trenddit.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -12,6 +10,7 @@ public class BestSubredditDaily {
     private String name;
     private Integer number;
     @Id
+    @Temporal(TemporalType.DATE)
     private Date date;
 
     public String getName() {

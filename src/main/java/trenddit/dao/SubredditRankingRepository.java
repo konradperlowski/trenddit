@@ -4,10 +4,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import trenddit.entity.SubredditRanking;
+import trenddit.entity.SubredditRankingPK;
 
 import java.util.List;
 
-public interface SubredditRankingRepository extends CrudRepository<SubredditRanking, Integer> {
+public interface SubredditRankingRepository extends CrudRepository<SubredditRanking, SubredditRankingPK> {
 
     @Query(value = "SELECT ((SELECT subscribers FROM subreddit_ranking WHERE date = :today AND name = :name) - " +
             "(SELECT subscribers FROM subreddit_ranking WHERE date = :date_from AND name = :name)) / :number",
