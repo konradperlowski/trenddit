@@ -1,4 +1,4 @@
-package trenddit.controller.bean;
+package trenddit.bean;
 
 import org.jetbrains.annotations.NotNull;
 
