@@ -7,8 +7,7 @@
     <h2 class="mt-4 mb-4">Top subreddits by number of posts in top r/all</h2>
 
     <label class="float-right">
-        <select class="form-control form-control-sm" id="periodOfTimeSelect"
-                onchange="drawTopSubredditChart()">
+        <select class="form-control form-control-sm" id="periodOfTimeSelect" onchange="drawTopSubredditChart()">
             <option value="day">Day</option>
             <option value="week" selected="selected">Week</option>
             <option value="month">Month</option>
@@ -85,16 +84,19 @@
             <tbody>
             <tr th:each="subreddit, iter: ${growthToday}">
                 <td th:text="'r/' + ${subreddit.name}"></td>
-                <td th:text="${subreddit.growth}" class="growth-number-up"></td>
+                <td th:text="${subreddit.growth}"
+                    th:class="${subreddit.growth > 0 ? 'growth-number-up' : 'growth-number-down'}"></td>
                 <td th:text="'r/' + ${growthWeek[__${iter.index}__].name}"></td>
-                <td th:text="${growthWeek[__${iter.index}__].growth}" class="growth-number-up"></td>
+                <td th:text="${growthWeek[__${iter.index}__].growth}"
+                    th:class="${growthWeek[__${iter.index}__].growth > 0 ? 'growth-number-up' : 'growth-number-down'}"></td>
                 <td th:text="'r/' + ${growthMonth[__${iter.index}__].name}"></td>
-                <td th:text="${growthMonth[__${iter.index}__].growth}" class="growth-number-up"></td>
+                <td th:text="${growthMonth[__${iter.index}__].growth}"
+                    th:class="${growthMonth[__${iter.index}__].growth > 0 ? 'growth-number-up' : 'growth-number-down'}"></td>
             </tr>
             </tbody>
             <tfoot>
             <tr>
-                <td colspan="6" class="show-more-button"><a class="table-link" href="/top/posts">Show more</a></td>
+                <td colspan="6" class="show-more-button"><a class="table-link" href="/top/growing">Show more</a></td>
             </tr>
             </tfoot>
         </table>
