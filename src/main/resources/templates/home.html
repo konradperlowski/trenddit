@@ -21,21 +21,21 @@
         drawTopSubredditChart()
     </script>
 
-    <div class="parent mb-5">
+    <div class="d-flex mb-5">
         <div class="small-container mr-4">
             <h2 class="mb-4">Top commented today</h2>
             <table class="table table-hover table-bordered table-striped">
                 <thead>
                 <tr>
                     <th scope="col">Subreddit</th>
-                    <th scope="col">Number of comments</th>
+                    <th class="w-90" scope="col">Comments</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="subreddit: ${mostCommented}" class="clickable-row" th:data="${subreddit.name}"
                     th:onclick="javascript:rowClicked(this.getAttribute('data'));">
                     <td th:text="'r/' + ${subreddit.name}"></td>
-                    <td th:text="${subreddit.comments}"></td>
+                    <td style="text-align: left" th:text="${subreddit.comments}"></td>
                 </tr>
                 </tbody>
                 <tfoot>
@@ -53,14 +53,14 @@
                 <thead>
                 <tr>
                     <th scope="col">Subreddit</th>
-                    <th scope="col">Number of posts</th>
+                    <th class="w-90" scope="col">Posts</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="subreddit: ${mostPosted}" class="clickable-row" th:data="${subreddit.name}"
                     th:onclick="javascript:rowClicked(this.getAttribute('data'));">
                     <td th:text="'r/' + ${subreddit.name}"></td>
-                    <td th:text="${subreddit.posts}"></td>
+                    <td style="text-align: left" th:text="${subreddit.posts}"></td>
                 </tr>
                 </tbody>
                 <tfoot>
@@ -84,14 +84,29 @@
             <tbody>
             <tr th:each="subreddit, iter: ${growthToday}">
                 <td th:text="'r/' + ${subreddit.name}"></td>
-                <td th:text="${subreddit.growth}"
-                    th:class="${subreddit.growth > 0 ? 'growth-number-up' : 'growth-number-down'}"></td>
+                <td th:class="${subreddit.growth > 0 ? 'growth-number-up' : 'growth-number-down'}">
+                    <div class="d-flex float-right">
+                        <span class="mr-2" th:text="${subreddit.growth}"></span>
+                        <i class="mr-1" data-fa-transform="down-4"
+                           th:classappend="${subreddit.growth > 0 ? 'fas fa-angle-up' : 'fas fa-angle-down'}"></i>
+                    </div>
+                </td>
                 <td th:text="'r/' + ${growthWeek[__${iter.index}__].name}"></td>
-                <td th:text="${growthWeek[__${iter.index}__].growth}"
-                    th:class="${growthWeek[__${iter.index}__].growth > 0 ? 'growth-number-up' : 'growth-number-down'}"></td>
+                <td th:class="${growthWeek[__${iter.index}__].growth > 0 ? 'growth-number-up' : 'growth-number-down'}">
+                    <div class="d-flex float-right">
+                        <span class="mr-2" th:text="${growthWeek[__${iter.index}__].growth}"></span>
+                        <i class="mr-1" data-fa-transform="down-4"
+                           th:classappend="${growthWeek[__${iter.index}__].growth > 0 ? 'fas fa-angle-up' : 'fas fa-angle-down'}"></i>
+                    </div>
+                </td>
                 <td th:text="'r/' + ${growthMonth[__${iter.index}__].name}"></td>
-                <td th:text="${growthMonth[__${iter.index}__].growth}"
-                    th:class="${growthMonth[__${iter.index}__].growth > 0 ? 'growth-number-up' : 'growth-number-down'}"></td>
+                <td th:class="${growthMonth[__${iter.index}__].growth > 0 ? 'growth-number-up' : 'growth-number-down'}">
+                    <div class="d-flex float-right">
+                        <span class="mr-2" th:text="${growthMonth[__${iter.index}__].growth}"></span>
+                        <i class="mr-1" data-fa-transform="down-4"
+                           th:classappend="${growthMonth[__${iter.index}__].growth > 0 ? 'fas fa-angle-up' : 'fas fa-angle-down'}"></i>
+                    </div>
+                </td>
             </tr>
             </tbody>
             <tfoot>

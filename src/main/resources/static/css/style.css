@@ -16,10 +16,6 @@
     cursor: pointer;
 }
 
-.parent {
-    display: flex;
-}
-
 .small-container {
     width: 425px;
 }
@@ -33,9 +29,8 @@
     text-decoration: none;
 }
 
-.growth-number-down, .growth-number-up {
-    text-align: center;
-    width: 100px;
+.growth-number-down, .growth-number-up, .w-90 {
+    width: 99px;
 }
 
 .growth-number-up {
