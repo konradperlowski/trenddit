@@ -20,9 +20,17 @@ public class UpdateDBCron {
 
         String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
-        String command = System.getProperty("os.name").startsWith("Windows") ?
-                "cmd.exe /c python scripts/src/update_data.py > scripts/" + currentDate + "-out.log" :
-                "/bin/bash -c python scripts/src/update_data.py > scripts/" + currentDate + "-out.log";
+        String[] command = new String[3];
+
+        if (System.getProperty("os.name").startsWith("Windows")) {
+            command[0] = "cmd.exe";
+            command[1] = "/c";
+        } else {
+            command[0] = "/bin/bash";
+            command[1] = "-c";
+        }
+        command[2] = "python3 scripts/src/update_data.py > scripts/" + currentDate + "-out.log";
+
         Process p = Runtime.getRuntime().exec(command);
 
         int exitCode = p.waitFor();
