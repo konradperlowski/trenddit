@@ -6,6 +6,11 @@ public class SubredditGrowth implements Comparable<SubredditGrowth> {
     private String name;
     private Integer growth;
 
+    public SubredditGrowth(String name, Integer growth) {
+        this.name = name;
+        this.growth = growth;
+    }
+
     public String getName() {
         return name;
     }

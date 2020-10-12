@@ -5,8 +5,9 @@ import trenddit.bean.SubredditGrowth;
 import trenddit.dao.SubredditRankingRepository;
 import trenddit.entity.SubredditRanking;
 
+import javax.persistence.Tuple;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -33,33 +34,28 @@ public class SubredditRankingService {
         return subredditRankingRepository.findTop10ByDateOrderByPostsDesc(new Date());
     }
 
-    public SubredditGrowth getSubredditGrowth(String subreddit, Integer days) {
-        SubredditGrowth subredditGrowth = new SubredditGrowth();
-        subredditGrowth.setName(subreddit);
-        subredditGrowth.setGrowth(subredditRankingRepository.findSubredditGrowth(subreddit,
-                dateToString(getToday()), dateToString(daysAgo(days)), days));
-
-        if (subredditGrowth.getGrowth() == null) subredditGrowth.setGrowth(0);
-
-        return subredditGrowth;
-    }
-
     public List<SubredditGrowth> getSubredditsGrowth(Integer days, Integer limit) {
-        List<SubredditGrowth> subredditGrowthList = new ArrayList<>();
-
-        subredditRankingRepository.findDistinctName()
-                .forEach(subreddit -> subredditGrowthList.add(getSubredditGrowth(subreddit, days)));
-
-        if (limit != null)
-            return subredditGrowthList.stream().sorted().limit(limit).collect(Collectors.toList());
-        return subredditGrowthList.stream().sorted().collect(Collectors.toList());
+        return mapToSubredditGrowth(subredditRankingRepository.findSubredditsGrowth(
+                getToday(), daysAgo(days), days, limit == null ? 9999 : limit));
     }
 
-    private Date getToday() {
-        return daysAgo(0);
+    private List<SubredditGrowth> mapToSubredditGrowth(List<Tuple> tupleList) {
+        return tupleList.stream().map(
+                tuple -> new SubredditGrowth(
+                        (String) tuple.get("name"),
+                        tuple.get("growth") == null ? 0 : ((BigDecimal) tuple.get("growth")).intValue())
+        ).collect(Collectors.toList());
     }
 
-    private Date daysAgo(Integer days) {
+    private String getToday() {
+        return dateToString(ago(0));
+    }
+
+    private String daysAgo(Integer days) {
+        return dateToString(ago(days));
+    }
+
+    private Date ago(Integer days) {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -days);
         return cal.getTime();

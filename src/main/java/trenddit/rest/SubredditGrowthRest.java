@@ -17,11 +17,6 @@ public class SubredditGrowthRest {
         this.subredditRankingService = subredditRankingService;
     }
 
-    @RequestMapping(value = "/{subreddit}/{days}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public SubredditGrowth getSubredditGrowth( @PathVariable String subreddit, @PathVariable Integer days) {
-        return subredditRankingService.getSubredditGrowth(subreddit, days);
-    }
-
     @RequestMapping(value = "/{days}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<SubredditGrowth> getSubredditsGrowth(@PathVariable Integer days,
                                                      @RequestParam(required = false) Integer limit) {
