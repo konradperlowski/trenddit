@@ -4,7 +4,30 @@
 <body>
 <nav th:replace="common/navbar :: common-navbar"></nav>
 <div class="container">
-    Top subreddits
+    <div class="mb-5">
+        <h2 class="mt-4 mb-3">Top subreddits</h2>
+        <span>Top subreddits based on subscriber number</span>
+    </div>
+
+    <div class="mb-5">
+        <table id="subscribersTable" class="table table-hover table-bordered table-striped" style="width: 100%">
+            <thead>
+            <tr>
+                <th style="width: 10%">Rank</th>
+                <th style="width: 65%">Subreddit</th>
+                <th style="width: 25%">Subscribers</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="subreddit, iter: ${subscribersList}" class="clickable-row" th:data="${subreddit.name}"
+                th:onclick="javascript:rowClicked(this.getAttribute('data'));">
+                <td th:text="${iter.index} + 1"></td>
+                <td th:text="'r/' + ${subreddit.name}"></td>
+                <td th:text="${subreddit.subscribers}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>

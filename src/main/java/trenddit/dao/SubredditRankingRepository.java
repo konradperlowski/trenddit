@@ -26,4 +26,6 @@ public interface SubredditRankingRepository extends CrudRepository<SubredditRank
     List<SubredditRanking> findTop10ByDateOrderByCommentsDesc(Date date);
 
     List<SubredditRanking> findTop10ByDateOrderByPostsDesc(Date date);
+
+    List<SubredditRanking> getByDateOrderBySubscribersDesc(Date date);
 }

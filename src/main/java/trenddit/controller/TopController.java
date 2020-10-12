@@ -4,10 +4,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import trenddit.service.SubredditRankingService;
 
 @Controller
 @RequestMapping("/top")
 public class TopController {
+
+    private final SubredditRankingService subredditRankingService;
+
+    public TopController(SubredditRankingService subredditRankingService) {
+        this.subredditRankingService = subredditRankingService;
+    }
+
 
     @GetMapping(value = "/growing")
     public String topGrowing(Model model) {
@@ -26,6 +34,7 @@ public class TopController {
 
     @GetMapping("/subreddits")
     public String topSubreddits(Model model) {
+        model.addAttribute("subscribersList", subredditRankingService.getSubscriberRanking());
         return "top/subreddits";
     }
 }

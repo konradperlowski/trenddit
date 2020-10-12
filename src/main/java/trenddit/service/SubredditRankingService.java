@@ -21,6 +21,10 @@ public class SubredditRankingService {
         this.subredditRankingRepository = subredditRankingRepository;
     }
 
+    public List<SubredditRanking> getSubscriberRanking() {
+        return subredditRankingRepository.getByDateOrderBySubscribersDesc(new Date());
+    }
+
     public List<SubredditRanking> getTodayMostCommented() {
         return subredditRankingRepository.findTop10ByDateOrderByCommentsDesc(new Date());
     }
