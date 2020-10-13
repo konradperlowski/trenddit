@@ -19,10 +19,10 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="subreddit, iter: ${subscribersList}" class="clickable-row" th:data="${subreddit.name}"
-                th:onclick="javascript:rowClicked(this.getAttribute('data'));">
+            <tr th:each="subreddit, iter: ${subscribersList}">
                 <td th:text="${iter.index} + 1"></td>
-                <td th:text="'r/' + ${subreddit.name}"></td>
+                <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
+                       th:href="'/subreddit/' + ${subreddit.name}"></a></td>
                 <td th:text="${subreddit.subscribers}"></td>
             </tr>
             </tbody>

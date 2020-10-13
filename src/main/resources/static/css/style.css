@@ -12,10 +12,6 @@
     max-height: 500px;
 }
 
-.clickable-row:hover {
-    cursor: pointer;
-}
-
 .small-container {
     width: 425px;
 }

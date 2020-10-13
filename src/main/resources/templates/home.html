@@ -32,10 +32,10 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="subreddit: ${mostCommented}" class="clickable-row" th:data="${subreddit.name}"
-                    th:onclick="javascript:rowClicked(this.getAttribute('data'));">
-                    <td th:text="'r/' + ${subreddit.name}"></td>
-                    <td style="text-align: left" th:text="${subreddit.comments}"></td>
+                <tr th:each="subreddit: ${mostCommented}">
+                    <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
+                           th:href="'/subreddit/' + ${subreddit.name}"></a></td>
+                    <td th:text="${subreddit.comments}"></td>
                 </tr>
                 </tbody>
                 <tfoot>
@@ -57,10 +57,10 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="subreddit: ${mostPosted}" class="clickable-row" th:data="${subreddit.name}"
-                    th:onclick="javascript:rowClicked(this.getAttribute('data'));">
-                    <td th:text="'r/' + ${subreddit.name}"></td>
-                    <td style="text-align: left" th:text="${subreddit.posts}"></td>
+                <tr th:each="subreddit: ${mostPosted}">
+                    <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
+                           th:href="'/subreddit/' + ${subreddit.name}"></a></td>
+                    <td th:text="${subreddit.posts}"></td>
                 </tr>
                 </tbody>
                 <tfoot>
@@ -83,7 +83,8 @@
             </thead>
             <tbody>
             <tr th:each="subreddit, iter: ${growthToday}">
-                <td th:text="'r/' + ${subreddit.name}"></td>
+                <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
+                       th:href="'/subreddit/' + ${subreddit.name}"></a></td>
                 <td th:class="${subreddit.growth > 0 ? 'growth-number-up' : 'growth-number-down'}">
                     <div class="d-flex float-right">
                         <span class="mr-2" th:text="${subreddit.growth}"></span>
@@ -91,7 +92,8 @@
                            th:classappend="${subreddit.growth > 0 ? 'fas fa-angle-up' : 'fas fa-angle-down'}"></i>
                     </div>
                 </td>
-                <td th:text="'r/' + ${growthWeek[__${iter.index}__].name}"></td>
+                <td><a class="table-link" th:text="'r/' + ${growthWeek[__${iter.index}__].name}"
+                       th:href="'/subreddit/' + ${growthWeek[__${iter.index}__].name}"></a></td>
                 <td th:class="${growthWeek[__${iter.index}__].growth > 0 ? 'growth-number-up' : 'growth-number-down'}">
                     <div class="d-flex float-right">
                         <span class="mr-2" th:text="${growthWeek[__${iter.index}__].growth}"></span>
@@ -99,7 +101,8 @@
                            th:classappend="${growthWeek[__${iter.index}__].growth > 0 ? 'fas fa-angle-up' : 'fas fa-angle-down'}"></i>
                     </div>
                 </td>
-                <td th:text="'r/' + ${growthMonth[__${iter.index}__].name}"></td>
+                <td><a class="table-link" th:text="'r/' + ${growthMonth[__${iter.index}__].name}"
+                       th:href="'/subreddit/' + ${growthMonth[__${iter.index}__].name}"></a></td>
                 <td th:class="${growthMonth[__${iter.index}__].growth > 0 ? 'growth-number-up' : 'growth-number-down'}">
                     <div class="d-flex float-right">
                         <span class="mr-2" th:text="${growthMonth[__${iter.index}__].growth}"></span>
