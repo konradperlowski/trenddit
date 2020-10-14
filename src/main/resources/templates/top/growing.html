@@ -9,72 +9,81 @@
         <span>Subreddits with highest subscriber growth over time</span>
     </div>
 
-    <label class="float-right">
-        <select class="form-control form-control-sm" id="growthTableSelect" onchange="changeGrowthTable()">
-            <option value="growthTableDayDiv" selected="selected">Day</option>
-            <option value="growthTableWeekDiv">Week</option>
-            <option value="growthTableMonthDiv">Month</option>
-
-        </select>
-    </label>
-
-    <div class="mb-5">
-        <div id="growthTableDayDiv">
-            <table id="growthTableDay" class="table table-hover table-bordered table-striped" style="width: 100%">
-                <thead>
-                <tr>
-                    <th style="width: 10%">Rank</th>
-                    <th style="width: 65%">Subreddit</th>
-                    <th style="width: 25%">Growth</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="subreddit, iter: ${growthWeek}">
-                    <td th:text="${iter.index} + 1"></td>
-                    <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
-                           th:href="'/subreddit/' + ${subreddit.name}"></a></td>
-                    <td th:text="${subreddit.growth}"></td>
-                </tr>
-                </tbody>
-            </table>
+    <div id="loadingDiv">
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
         </div>
-        <div id="growthTableWeekDiv" style="display: none">
-            <table id="growthTableWeek" class="table table-hover table-bordered table-striped" style="width: 100%">
-                <thead>
-                <tr>
-                    <th style="width: 10%">Rank</th>
-                    <th style="width: 65%">Subreddit</th>
-                    <th style="width: 25%">Growth</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="subreddit, iter: ${growthWeek}">
-                    <td th:text="${iter.index} + 1"></td>
-                    <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
-                           th:href="'/subreddit/' + ${subreddit.name}"></a></td>
-                    <td th:text="${subreddit.growth}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div id="growthTableMonthDiv" style="display:none;">
-            <table id="growthTableMonth" class="table table-hover table-bordered table-striped" style="width: 100%">
-                <thead>
-                <tr>
-                    <th style="width: 10%">Rank</th>
-                    <th style="width: 65%">Subreddit</th>
-                    <th style="width: 25%">Growth</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="subreddit, iter: ${growthMonth}">
-                    <td th:text="${iter.index} + 1"></td>
-                    <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
-                           th:href="'/subreddit/' + ${subreddit.name}"></a></td>
-                    <td th:text="${subreddit.growth}"></td>
-                </tr>
-                </tbody>
-            </table>
+    </div>
+    <div id="pageContent" style="display:none;">
+        <label class="float-right">
+            <select class="form-control form-control-sm" id="growthTableSelect" onchange="changeGrowthTable()">
+                <option value="growthTableDayDiv" selected="selected">Day</option>
+                <option value="growthTableWeekDiv">Week</option>
+                <option value="growthTableMonthDiv">Month</option>
+
+            </select>
+        </label>
+
+        <div class="mb-5">
+            <div id="growthTableDayDiv">
+                <table id="growthTableDay" class="table table-hover table-bordered table-striped" style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th style="width: 10%">Rank</th>
+                        <th style="width: 65%">Subreddit</th>
+                        <th style="width: 25%">Growth</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="subreddit, iter: ${growthToday}">
+                        <td th:text="${iter.index} + 1"></td>
+                        <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
+                               th:href="'/subreddit/' + ${subreddit.name}"></a></td>
+                        <td th:text="${subreddit.growth}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="growthTableWeekDiv" style="display: none">
+                <table id="growthTableWeek" class="table table-hover table-bordered table-striped" style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th style="width: 10%">Rank</th>
+                        <th style="width: 65%">Subreddit</th>
+                        <th style="width: 25%">Growth</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="subreddit, iter: ${growthWeek}">
+                        <td th:text="${iter.index} + 1"></td>
+                        <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
+                               th:href="'/subreddit/' + ${subreddit.name}"></a></td>
+                        <td th:text="${subreddit.growth}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="growthTableMonthDiv" style="display:none;">
+                <table id="growthTableMonth" class="table table-hover table-bordered table-striped" style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th style="width: 10%">Rank</th>
+                        <th style="width: 65%">Subreddit</th>
+                        <th style="width: 25%">Growth</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="subreddit, iter: ${growthMonth}">
+                        <td th:text="${iter.index} + 1"></td>
+                        <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
+                               th:href="'/subreddit/' + ${subreddit.name}"></a></td>
+                        <td th:text="${subreddit.growth}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
