@@ -19,6 +19,9 @@ public class TopController {
 
     @GetMapping(value = "/growing")
     public String topGrowing(Model model) {
+        model.addAttribute("growthToday", subredditRankingService.getSubredditsGrowth(1, 9999));
+        model.addAttribute("growthWeek", subredditRankingService.getSubredditsGrowth(7, 9999));
+        model.addAttribute("growthMonth", subredditRankingService.getSubredditsGrowth(30, 9999));
         return "top/growing";
     }
 
