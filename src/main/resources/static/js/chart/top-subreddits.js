@@ -4,14 +4,16 @@ async function drawTopSubredditChart() {
     let names = []
     let values = []
 
-    await fetch('/api/best/' + document.getElementById("periodOfTimeSelect").value)
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(function (subreddit) {
-                names.push(subreddit.name)
-                values.push(subreddit.number)
-            });
-        });
+    await $.ajax({
+        url: '/api/best/' + $("#periodOfTimeSelect").val(),
+        method: 'get',
+        dataType: 'json'
+    }).done(response => {
+        response.forEach(subreddit => {
+            names.push(subreddit.name)
+            values.push(subreddit.number)
+        })
+    })
 
     if (chart !== null)
         chart.destroy()
@@ -21,7 +23,7 @@ async function drawTopSubredditChart() {
         data: {
             labels: names,
             datasets: [{
-                label: "Number of posts",
+                label: 'Number of posts',
                 data: values,
                 backgroundColor: 'rgba(0, 123, 255, 0.6)',
                 borderColor: 'rgba(0, 123, 255, 1)',
