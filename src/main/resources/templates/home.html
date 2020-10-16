@@ -85,29 +85,29 @@
             <tr th:each="subreddit, iter: ${growthToday}">
                 <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
                        th:href="'/subreddit/' + ${subreddit.name}"></a></td>
-                <td th:class="${subreddit.growth > 0 ? 'growth-number-up' : 'growth-number-down'}">
+                <td th:class="${subreddit.number > 0 ? 'growth-number-up' : 'growth-number-down'}">
                     <div class="d-flex float-right">
-                        <span class="mr-2" th:text="${subreddit.growth}"></span>
+                        <span class="mr-2" th:text="${subreddit.number}"></span>
                         <i class="mr-1" data-fa-transform="down-4"
-                           th:classappend="${subreddit.growth > 0 ? 'fas fa-angle-up' : 'fas fa-angle-down'}"></i>
+                           th:classappend="${subreddit.number > 0 ? 'fas fa-angle-up' : 'fas fa-angle-down'}"></i>
                     </div>
                 </td>
                 <td><a class="table-link" th:text="'r/' + ${growthWeek[__${iter.index}__].name}"
                        th:href="'/subreddit/' + ${growthWeek[__${iter.index}__].name}"></a></td>
-                <td th:class="${growthWeek[__${iter.index}__].growth > 0 ? 'growth-number-up' : 'growth-number-down'}">
+                <td th:class="${growthWeek[__${iter.index}__].number > 0 ? 'growth-number-up' : 'growth-number-down'}">
                     <div class="d-flex float-right">
-                        <span class="mr-2" th:text="${growthWeek[__${iter.index}__].growth}"></span>
+                        <span class="mr-2" th:text="${growthWeek[__${iter.index}__].number}"></span>
                         <i class="mr-1" data-fa-transform="down-4"
-                           th:classappend="${growthWeek[__${iter.index}__].growth > 0 ? 'fas fa-angle-up' : 'fas fa-angle-down'}"></i>
+                           th:classappend="${growthWeek[__${iter.index}__].number > 0 ? 'fas fa-angle-up' : 'fas fa-angle-down'}"></i>
                     </div>
                 </td>
                 <td><a class="table-link" th:text="'r/' + ${growthMonth[__${iter.index}__].name}"
                        th:href="'/subreddit/' + ${growthMonth[__${iter.index}__].name}"></a></td>
-                <td th:class="${growthMonth[__${iter.index}__].growth > 0 ? 'growth-number-up' : 'growth-number-down'}">
+                <td th:class="${growthMonth[__${iter.index}__].number > 0 ? 'growth-number-up' : 'growth-number-down'}">
                     <div class="d-flex float-right">
-                        <span class="mr-2" th:text="${growthMonth[__${iter.index}__].growth}"></span>
+                        <span class="mr-2" th:text="${growthMonth[__${iter.index}__].number}"></span>
                         <i class="mr-1" data-fa-transform="down-4"
-                           th:classappend="${growthMonth[__${iter.index}__].growth > 0 ? 'fas fa-angle-up' : 'fas fa-angle-down'}"></i>
+                           th:classappend="${growthMonth[__${iter.index}__].number > 0 ? 'fas fa-angle-up' : 'fas fa-angle-down'}"></i>
                     </div>
                 </td>
             </tr>

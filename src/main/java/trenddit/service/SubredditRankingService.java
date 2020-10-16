@@ -1,7 +1,7 @@
 package trenddit.service;
 
 import org.springframework.stereotype.Service;
-import trenddit.bean.SubredditGrowth;
+import trenddit.bean.SubredditMetric;
 import trenddit.dao.SubredditRankingRepository;
 import trenddit.entity.SubredditRanking;
 
@@ -30,25 +30,31 @@ public class SubredditRankingService {
         return subredditRankingRepository.findTop10ByDateOrderByCommentsDesc(new Date());
     }
 
+    public List<SubredditMetric> getAverageComments(Integer days) {
+        return mapToSubredditMetric(subredditRankingRepository.findAverageComments(
+                daysAgo(0), daysAgo(days)), "comments");
+    }
+
     public List<SubredditRanking> getTodayMostPosted() {
         return subredditRankingRepository.findTop10ByDateOrderByPostsDesc(new Date());
     }
 
-    public List<SubredditGrowth> getSubredditsGrowth(Integer days, Integer limit) {
-        return mapToSubredditGrowth(subredditRankingRepository.findSubredditsGrowth(
-                getToday(), daysAgo(days), days, limit == null ? 9999 : limit));
+    public List<SubredditMetric> getAveragePosted(Integer days) {
+        return mapToSubredditMetric(subredditRankingRepository.findAveragePosts(
+                daysAgo(0), daysAgo(days)), "posts");
     }
 
-    private List<SubredditGrowth> mapToSubredditGrowth(List<Tuple> tupleList) {
+    public List<SubredditMetric> getSubredditsGrowth(Integer days, Integer limit) {
+        return mapToSubredditMetric(subredditRankingRepository.findSubredditsGrowth(
+                daysAgo(0), daysAgo(days), days, limit == null ? 9999 : limit), "growth");
+    }
+
+    private List<SubredditMetric> mapToSubredditMetric(List<Tuple> tupleList, String metricName) {
         return tupleList.stream().map(
-                tuple -> new SubredditGrowth(
+                tuple -> new SubredditMetric(
                         (String) tuple.get("name"),
-                        tuple.get("growth") == null ? 0 : ((BigDecimal) tuple.get("growth")).intValue())
+                        tuple.get(metricName) == null ? 0 : ((BigDecimal) tuple.get(metricName)).intValue())
         ).collect(Collectors.toList());
-    }
-
-    private String getToday() {
-        return dateToString(ago(0));
     }
 
     private String daysAgo(Integer days) {

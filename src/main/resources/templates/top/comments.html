@@ -4,7 +4,90 @@
 <body>
 <nav th:replace="common/navbar :: common-navbar"></nav>
 <div class="container">
-    Top comments
+    <div class="mb-5">
+        <h2 class="mt-4 mb-3">Top comments</h2>
+        <span>Top subreddits based on comment number</span>
+    </div>
+
+    <div id="loadingDiv">
+        <div class="d-flex justify-content-center m-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <div id="pageContent" style="display:none;">
+        <label class="float-right">
+            <select class="form-control form-control-sm" id="commentsTableSelect" onchange="changeCommentTable()">
+                <option value="commentsTableDayDiv" selected="selected">Day</option>
+                <option value="commentsTableWeekDiv">Week</option>
+                <option value="commentsTableMonthDiv">Month</option>
+
+            </select>
+        </label>
+
+        <div class="mb-5">
+            <div id="commentsTableDayDiv">
+                <table id="commentsTableDay" class="table table-hover table-bordered table-striped" style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th style="width: 10%">Rank</th>
+                        <th style="width: 65%">Subreddit</th>
+                        <th style="width: 25%">Comments</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="subreddit, iter: ${commentsToday}">
+                        <td th:text="${iter.index} + 1"></td>
+                        <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
+                               th:href="'/subreddit/' + ${subreddit.name}"></a></td>
+                        <td th:text="${subreddit.number}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="commentsTableWeekDiv" style="display: none">
+                <table id="commentsTableWeek" class="table table-hover table-bordered table-striped"
+                       style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th style="width: 10%">Rank</th>
+                        <th style="width: 65%">Subreddit</th>
+                        <th style="width: 25%">Comments</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="subreddit, iter: ${commentsWeek}">
+                        <td th:text="${iter.index} + 1"></td>
+                        <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
+                               th:href="'/subreddit/' + ${subreddit.name}"></a></td>
+                        <td th:text="${subreddit.number}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="commentsTableMonthDiv" style="display:none;">
+                <table id="commentsTableMonth" class="table table-hover table-bordered table-striped"
+                       style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th style="width: 10%">Rank</th>
+                        <th style="width: 65%">Subreddit</th>
+                        <th style="width: 25%">Comments</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="subreddit, iter: ${commentsMonth}">
+                        <td th:text="${iter.index} + 1"></td>
+                        <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
+                               th:href="'/subreddit/' + ${subreddit.name}"></a></td>
+                        <td th:text="${subreddit.number}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

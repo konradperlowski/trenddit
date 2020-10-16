@@ -4,7 +4,90 @@
 <body>
 <nav th:replace="common/navbar :: common-navbar"></nav>
 <div class="container">
-    Top posts
+    <div class="mb-5">
+        <h2 class="mt-4 mb-3">Top posts</h2>
+        <span>Top subreddits based on post number</span>
+    </div>
+
+    <div id="loadingDiv">
+        <div class="d-flex justify-content-center m-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <div id="pageContent" style="display:none;">
+        <label class="float-right">
+            <select class="form-control form-control-sm" id="postsTableSelect" onchange="changePostTable()">
+                <option value="postsTableDayDiv" selected="selected">Day</option>
+                <option value="postsTableWeekDiv">Week</option>
+                <option value="postsTableMonthDiv">Month</option>
+
+            </select>
+        </label>
+
+        <div class="mb-5">
+            <div id="postsTableDayDiv">
+                <table id="postsTableDay" class="table table-hover table-bordered table-striped" style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th style="width: 10%">Rank</th>
+                        <th style="width: 65%">Subreddit</th>
+                        <th style="width: 25%">Posts</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="subreddit, iter: ${postsToday}">
+                        <td th:text="${iter.index} + 1"></td>
+                        <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
+                               th:href="'/subreddit/' + ${subreddit.name}"></a></td>
+                        <td th:text="${subreddit.number}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="postsTableWeekDiv" style="display: none">
+                <table id="postsTableWeek" class="table table-hover table-bordered table-striped"
+                       style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th style="width: 10%">Rank</th>
+                        <th style="width: 65%">Subreddit</th>
+                        <th style="width: 25%">Posts</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="subreddit, iter: ${postsWeek}">
+                        <td th:text="${iter.index} + 1"></td>
+                        <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
+                               th:href="'/subreddit/' + ${subreddit.name}"></a></td>
+                        <td th:text="${subreddit.number}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="postsTableMonthDiv" style="display:none;">
+                <table id="postsTableMonth" class="table table-hover table-bordered table-striped"
+                       style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th style="width: 10%">Rank</th>
+                        <th style="width: 65%">Subreddit</th>
+                        <th style="width: 25%">Posts</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="subreddit, iter: ${postsMonth}">
+                        <td th:text="${iter.index} + 1"></td>
+                        <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
+                               th:href="'/subreddit/' + ${subreddit.name}"></a></td>
+                        <td th:text="${subreddit.number}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

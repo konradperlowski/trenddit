@@ -28,4 +28,18 @@ public interface SubredditRankingRepository extends CrudRepository<SubredditRank
     List<SubredditRanking> findTop10ByDateOrderByPostsDesc(Date date);
 
     List<SubredditRanking> getByDateOrderBySubscribersDesc(Date date);
+
+    @Query(value = "SELECT name, AVG(comments) AS comments FROM subreddit_ranking " +
+            "WHERE date BETWEEN :date_from AND :today GROUP BY name ORDER BY comments DESC",
+            nativeQuery = true)
+    List<Tuple> findAverageComments(
+            @Param("today") String today,
+            @Param("date_from") String from);
+
+    @Query(value = "SELECT name, AVG(posts) AS posts FROM subreddit_ranking " +
+            "WHERE date BETWEEN :date_from AND :today GROUP BY name ORDER BY posts DESC",
+            nativeQuery = true)
+    List<Tuple> findAveragePosts(
+            @Param("today") String today,
+            @Param("date_from") String from);
 }

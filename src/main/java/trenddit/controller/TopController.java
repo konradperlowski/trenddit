@@ -27,11 +27,17 @@ public class TopController {
 
     @GetMapping("/comments")
     public String topComments(Model model) {
+        model.addAttribute("commentsToday", subredditRankingService.getAverageComments(1));
+        model.addAttribute("commentsWeek", subredditRankingService.getAverageComments(7));
+        model.addAttribute("commentsMonth", subredditRankingService.getAverageComments(30));
         return "top/comments";
     }
 
     @GetMapping("/posts")
     public String topPosts(Model model) {
+        model.addAttribute("postsToday", subredditRankingService.getAveragePosted(1));
+        model.addAttribute("postsWeek", subredditRankingService.getAveragePosted(7));
+        model.addAttribute("postsMonth", subredditRankingService.getAveragePosted(30));
         return "top/posts";
     }
 
