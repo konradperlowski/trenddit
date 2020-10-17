@@ -31,7 +31,7 @@
                     <td th:text="${iter.index} + 1"></td>
                     <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
                            th:href="'/subreddit/' + ${subreddit.name}"></a></td>
-                    <td th:text="${subreddit.subscribers}"></td>
+                    <td th:text="${subreddit.number}"></td>
                 </tr>
                 </tbody>
             </table>

@@ -23,8 +23,10 @@ public class SubredditRankingService {
         this.subredditRankingRepository = subredditRankingRepository;
     }
 
-    public List<SubredditRanking> getSubscriberRanking() {
-        return subredditRankingRepository.getByDateOrderBySubscribersDesc(new Date());
+    public List<SubredditMetric> getSubscriberRanking() {
+        return subredditRankingRepository.getByDateOrderBySubscribersDesc(new Date())
+                .stream().map(subreddit -> new SubredditMetric(subreddit.getName(), subreddit.getSubscribers()))
+                .collect(Collectors.toList());
     }
 
     public List<SubredditRanking> getTodayMostCommented() {
@@ -50,8 +52,9 @@ public class SubredditRankingService {
                 daysAgo(0), daysAgo(days), days, limit == null ? 9999 : limit), "growth");
     }
 
-    public SubredditRankedMetric getSubredditGrowthWithRank(String subredditName) {
-        List<SubredditMetric> subredditsGrowth = getSubredditsGrowth(1, 9999);
+    public SubredditRankedMetric getSubredditRankedList(String subredditName, String metric) {
+        List<SubredditMetric> subredditsGrowth = getMetricList(metric, 1);
+        if (subredditsGrowth == null) return null;
         final int[] i = {1};
         List<SubredditRankedMetric> subredditsGrowthRanked = subredditsGrowth.stream()
                 .map(subreddit -> new SubredditRankedMetric(
@@ -61,6 +64,21 @@ public class SubredditRankingService {
         return subredditsGrowthRanked.stream()
                 .filter(subreddit -> subreddit.getName().equals(subredditName))
                 .findAny().orElse(null);
+    }
+
+    private List<SubredditMetric> getMetricList(String metric, Integer days) {
+        switch (metric) {
+            case "growth":
+                return getSubredditsGrowth(days, 9999);
+            case "comments":
+                return getAverageComments(days);
+            case "posts":
+                return getAveragePosted(days);
+            case "subscribers":
+                return getSubscriberRanking();
+            default:
+                return null;
+        }
     }
 
     private List<SubredditMetric> mapToSubredditMetric(List<Tuple> tupleList, String metricName) {
