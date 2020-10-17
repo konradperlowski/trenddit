@@ -4,7 +4,14 @@
 <body>
 <nav th:replace="common/navbar :: common-navbar"></nav>
 <div class="container">
-    Subreddit page
+    <div class="mb-5">
+        <h2 class="mt-4 mb-3">
+            <a class="text-reset text-decoration-none" th:href="'https://www.reddit.com' + ${subreddit.url}"
+               th:text="'r/' + ${subreddit.name}"></a>
+        </h2>
+        <p th:text="${subreddit.description}"></p>
+        <p th:text="'Created at: ' + ${subreddit.createdAt}"></p>
+    </div>
 </div>
 </body>
 </html>
