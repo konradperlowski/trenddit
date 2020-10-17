@@ -58,6 +58,16 @@
             </div>
         </div>
     </div>
+
+    <h4 class="mt-4 mb-4">Subreddit growth over last month</h4>
+
+    <canvas id="growth-subscribers" class="data-chart mb-5"></canvas>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        let subreddit = /*[[${subreddit.name}]]*/ null;
+        /*]]>*/
+        drawGrowthChart('subscribers', subreddit, 'growth-subscribers');
+    </script>
 </div>
 </body>
 </html>

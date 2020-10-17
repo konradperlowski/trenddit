@@ -42,4 +42,6 @@ public interface SubredditRankingRepository extends CrudRepository<SubredditRank
     List<Tuple> findAveragePosts(
             @Param("today") String today,
             @Param("date_from") String from);
+
+    List<SubredditRanking> findAllByName(String name);
 }
