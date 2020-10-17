@@ -2,6 +2,7 @@ package trenddit.service;
 
 import org.springframework.stereotype.Service;
 import trenddit.bean.SubredditMetric;
+import trenddit.bean.SubredditRankedMetric;
 import trenddit.dao.SubredditRankingRepository;
 import trenddit.entity.SubredditRanking;
 
@@ -47,6 +48,19 @@ public class SubredditRankingService {
     public List<SubredditMetric> getSubredditsGrowth(Integer days, Integer limit) {
         return mapToSubredditMetric(subredditRankingRepository.findSubredditsGrowth(
                 daysAgo(0), daysAgo(days), days, limit == null ? 9999 : limit), "growth");
+    }
+
+    public SubredditRankedMetric getSubredditGrowthWithRank(String subredditName) {
+        List<SubredditMetric> subredditsGrowth = getSubredditsGrowth(1, 9999);
+        final int[] i = {1};
+        List<SubredditRankedMetric> subredditsGrowthRanked = subredditsGrowth.stream()
+                .map(subreddit -> new SubredditRankedMetric(
+                        subreddit.getName(),
+                        subreddit.getNumber(),
+                        i[0]++)).collect(Collectors.toList());
+        return subredditsGrowthRanked.stream()
+                .filter(subreddit -> subreddit.getName().equals(subredditName))
+                .findAny().orElse(null);
     }
 
     private List<SubredditMetric> mapToSubredditMetric(List<Tuple> tupleList, String metricName) {
