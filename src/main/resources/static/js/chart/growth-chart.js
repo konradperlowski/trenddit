@@ -20,9 +20,9 @@ async function drawGrowthChart(metric, subreddit, canvasId) {
             datasets: [{
                 label: 'Subscribers',
                 data: values,
-                backgroundColor: 'rgba(0, 123, 255, 0.3)',
+                backgroundColor: 'rgba(0, 123, 255, 0)',
                 borderColor: 'rgba(0, 123, 255, 1)',
-                borderWidth: 2
+                borderWidth: 3
             }]
         },
         options: {
