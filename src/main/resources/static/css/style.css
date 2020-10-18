@@ -12,6 +12,11 @@
     max-height: 500px;
 }
 
+.growth-chart {
+    max-width: 900px;
+    max-height: 400px;
+}
+
 .small-container {
     width: 425px;
 }

@@ -1,7 +1,6 @@
 package trenddit.service;
 
 import org.springframework.stereotype.Service;
-import trenddit.bean.SubredditDate;
 import trenddit.bean.SubredditMetric;
 import trenddit.bean.SubredditRankedMetric;
 import trenddit.dao.SubredditRankingRepository;
@@ -67,10 +66,8 @@ public class SubredditRankingService {
                 .findAny().orElse(null);
     }
 
-    public List<SubredditDate> getSubredditGrowthOverTime(String subredditName) {
-        return subredditRankingRepository.findAllByName(subredditName).stream()
-                .map(subreddit -> new SubredditDate(subreddit.getDate(), subreddit.getSubscribers()))
-                .collect(Collectors.toList());
+    public List<SubredditRanking> getSubredditMetricGrowthOverTime(String subredditName) {
+        return subredditRankingRepository.findAllByName(subredditName);
     }
 
     private List<SubredditMetric> getMetricList(String metric, Integer days) {

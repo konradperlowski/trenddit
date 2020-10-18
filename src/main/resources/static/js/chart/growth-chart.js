@@ -1,18 +1,30 @@
-async function drawGrowthChart(metric, subreddit, canvasId) {
+async function drawGrowthChart(subreddit) {
     let dates = []
-    let values = []
+    let subscribers = []
+    let comments = []
+    let posts = []
+
 
     await $.ajax({
-        url: '/api/growth/' + metric + '/' + subreddit,
+        url: '/api/growth/metric/' + subreddit,
         method: 'get',
         dataType: 'json'
     }).done(response => {
         response.forEach(subreddit => {
             dates.push(subreddit.date)
-            values.push(subreddit.number)
+            subscribers.push(subreddit.subscribers)
+            comments.push(subreddit.comments)
+            posts.push(subreddit.posts)
         })
     })
 
+    drawChart('growth-subscribers', dates, subscribers);
+    drawChart('growth-comments', dates, comments)
+    drawChart('growth-posts', dates, posts)
+
+}
+
+function drawChart(canvasId, dates, values) {
     new Chart(document.getElementById(canvasId).getContext("2d"), {
         type: 'line',
         data: {

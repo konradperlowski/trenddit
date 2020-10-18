@@ -2,8 +2,8 @@ package trenddit.rest;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import trenddit.bean.SubredditDate;
 import trenddit.bean.SubredditMetric;
+import trenddit.entity.SubredditRanking;
 import trenddit.service.SubredditRankingService;
 
 import java.util.List;
@@ -24,8 +24,8 @@ public class SubredditGrowthRest {
         return subredditRankingService.getSubredditsGrowth(days, limit);
     }
 
-    @RequestMapping(value = "/subscribers/{subreddit}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<SubredditDate> getSubredditSubscribersOverMonth(@PathVariable String subreddit) {
-        return subredditRankingService.getSubredditGrowthOverTime(subreddit);
+    @RequestMapping(value = "/metric/{subreddit}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<SubredditRanking> getSubredditSubscribersOverMonth(@PathVariable String subreddit) {
+        return subredditRankingService.getSubredditMetricGrowthOverTime(subreddit);
     }
 }
