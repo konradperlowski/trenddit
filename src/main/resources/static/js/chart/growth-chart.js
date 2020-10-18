@@ -31,6 +31,16 @@ async function drawGrowthChart(metric, subreddit, canvasId) {
                     ticks: {
                         beginAtZero: false
                     }
+                }],
+                xAxes: [{
+                    afterTickToLabelConversion: data => {
+                        const xLabels = data.ticks;
+                        xLabels.forEach((labels, i) => {
+                            if (i % 2 === 1) {
+                                xLabels[i] = '';
+                            }
+                        });
+                    }
                 }]
             }
         }
