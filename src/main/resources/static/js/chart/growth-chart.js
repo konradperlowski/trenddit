@@ -18,7 +18,7 @@ async function drawGrowthChart(subreddit) {
         })
     })
 
-    drawChart('growth-subscribers', dates, subscribers);
+    drawChart('growth-subscribers', dates, subscribers)
     drawChart('growth-comments', dates, comments)
     drawChart('growth-posts', dates, posts)
 
