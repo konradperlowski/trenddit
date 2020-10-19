@@ -18,19 +18,19 @@ async function drawGrowthChart(subreddit) {
         })
     })
 
-    drawChart('growth-subscribers', dates, subscribers)
-    drawChart('growth-comments', dates, comments)
-    drawChart('growth-posts', dates, posts)
+    drawChart('growth-subscribers', dates, subscribers, 'Subscribers')
+    drawChart('growth-comments', dates, comments, 'Comments')
+    drawChart('growth-posts', dates, posts, 'Posts')
 
 }
 
-function drawChart(canvasId, dates, values) {
+function drawChart(canvasId, dates, values, label) {
     new Chart(document.getElementById(canvasId).getContext("2d"), {
         type: 'line',
         data: {
             labels: dates,
             datasets: [{
-                label: 'Subscribers',
+                label: label,
                 data: values,
                 backgroundColor: 'rgba(0, 123, 255, 0)',
                 borderColor: 'rgba(0, 123, 255, 1)',
