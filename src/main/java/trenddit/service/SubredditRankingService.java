@@ -52,6 +52,11 @@ public class SubredditRankingService {
                 daysAgo(0), daysAgo(days), days, limit == null ? 9999 : limit), "growth");
     }
 
+    public SubredditMetric getSubredditGrowth(String subreddit, Integer days) {
+        return mapToSubredditMetric(subredditRankingRepository.findSubredditGrowth(
+                subreddit, daysAgo(0), daysAgo(days), days), "growth");
+    }
+
     public SubredditRankedMetric getSubredditRankedList(String subredditName, String metric) {
         List<SubredditMetric> subredditsGrowth = getMetricList(metric, 1);
         if (subredditsGrowth == null) return null;
@@ -85,12 +90,14 @@ public class SubredditRankingService {
         }
     }
 
+    private SubredditMetric mapToSubredditMetric(Tuple tuple, String metricName) {
+        return new SubredditMetric(
+                (String) tuple.get("name"),
+                tuple.get(metricName) == null ? 0 : ((BigDecimal) tuple.get(metricName)).intValue());
+    }
+
     private List<SubredditMetric> mapToSubredditMetric(List<Tuple> tupleList, String metricName) {
-        return tupleList.stream().map(
-                tuple -> new SubredditMetric(
-                        (String) tuple.get("name"),
-                        tuple.get(metricName) == null ? 0 : ((BigDecimal) tuple.get(metricName)).intValue())
-        ).collect(Collectors.toList());
+        return tupleList.stream().map(tuple -> mapToSubredditMetric(tuple, metricName)).collect(Collectors.toList());
     }
 
     private String daysAgo(Integer days) {

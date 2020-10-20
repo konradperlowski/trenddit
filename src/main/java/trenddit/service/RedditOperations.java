@@ -52,6 +52,9 @@ public class RedditOperations {
         subredditInfo.setGrowthToday(growthRank.getNumber());
         subredditInfo.setGrowthTodayRank(growthRank.getRank());
 
+        subredditInfo.setGrowthWeek(subredditRankingService.getSubredditGrowth(subredditName, 7).getNumber());
+        subredditInfo.setGrowthMonth(subredditRankingService.getSubredditGrowth(subredditName, 30).getNumber());
+
         DefaultPaginator<Submission> paginator = redditClient.subreddit(subredditName).posts()
                 .limit(5)
                 .sorting(SubredditSort.TOP)

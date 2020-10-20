@@ -23,6 +23,17 @@ public interface SubredditRankingRepository extends CrudRepository<SubredditRank
             @Param("number") Integer numberOfDays,
             @Param("limit") Integer limit);
 
+    @Query(value = "SELECT a.name, (a.subscribers - b.subscribers) / :number AS growth " +
+            "FROM subreddit_ranking a LEFT JOIN " +
+            "(SELECT name, subscribers FROM subreddit_ranking WHERE date = :date_from AND name = :subreddit) b " +
+            "ON a.name = b.name  WHERE a.date = :today AND a.name = :subreddit",
+            nativeQuery = true)
+    Tuple findSubredditGrowth(
+            @Param("subreddit") String subreddit,
+            @Param("today") String today,
+            @Param("date_from") String from,
+            @Param("number") Integer numberOfDays);
+
     List<SubredditRanking> findTop10ByDateOrderByCommentsDesc(Date date);
 
     List<SubredditRanking> findTop10ByDateOrderByPostsDesc(Date date);
