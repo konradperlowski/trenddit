@@ -1,7 +1,5 @@
 package trenddit.bean;
 
-import net.dean.jraw.models.Submission;
-
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +19,7 @@ public class SubredditInfo {
     private Integer growthTodayRank;
     private Integer growthWeek;
     private Integer growthMonth;
-    private List<Submission> bestSubmissions;
+    private List<SubredditPost> bestSubmissions;
 
     public String getName() {
         return name;
@@ -36,7 +34,7 @@ public class SubredditInfo {
     }
 
     public void setUrl(String url) {
-        this.url = url;
+        this.url = "https://www.reddit.com" + url;
     }
 
     public String getDescription() {
@@ -135,11 +133,11 @@ public class SubredditInfo {
         this.growthMonth = growthMonth;
     }
 
-    public List<Submission> getBestSubmissions() {
+    public List<SubredditPost> getBestSubmissions() {
         return bestSubmissions;
     }
 
-    public void setBestSubmissions(List<Submission> bestSubmissions) {
+    public void setBestSubmissions(List<SubredditPost> bestSubmissions) {
         this.bestSubmissions = bestSubmissions;
     }
 }

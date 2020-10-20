@@ -1,10 +1,15 @@
 package trenddit.service;
 
 import net.dean.jraw.RedditClient;
-import net.dean.jraw.models.Subreddit;
+import net.dean.jraw.models.*;
+import net.dean.jraw.pagination.DefaultPaginator;
 import org.springframework.stereotype.Component;
 import trenddit.bean.SubredditInfo;
+import trenddit.bean.SubredditPost;
 import trenddit.bean.SubredditRankedMetric;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class RedditOperations {
@@ -46,6 +51,20 @@ public class RedditOperations {
         SubredditRankedMetric growthRank = subredditRankingService.getSubredditRankedList(subredditName, "growth");
         subredditInfo.setGrowthToday(growthRank.getNumber());
         subredditInfo.setGrowthTodayRank(growthRank.getRank());
+
+        DefaultPaginator<Submission> paginator = redditClient.subreddit(subredditName).posts()
+                .limit(5)
+                .sorting(SubredditSort.TOP)
+                .timePeriod(TimePeriod.ALL)
+                .build();
+
+        subredditInfo.setBestSubmissions(convertToSubredditPost(paginator.next()));
         return subredditInfo;
+    }
+
+    private List<SubredditPost> convertToSubredditPost(Listing<Submission> submissionListing) {
+        return submissionListing.stream()
+                .map(s -> new SubredditPost(s.getTitle(), s.getPermalink(), s.getScore()))
+                .collect(Collectors.toList());
     }
 }

@@ -6,7 +6,7 @@
 <div class="container">
     <div class="mb-5">
         <h2 class="mt-4 mb-3">
-            <a class="text-reset text-decoration-none" th:href="'https://www.reddit.com' + ${subreddit.url}"
+            <a class="text-reset text-decoration-none" th:href="${subreddit.url}"
                th:text="'r/' + ${subreddit.name}"></a>
         </h2>
         <p th:text="${subreddit.description}"></p>
@@ -73,6 +73,39 @@
         /*]]>*/
         drawGrowthChart(subreddit);
     </script>
+
+    <div class="d-flex mb-5">
+        <div class="shadow-sm p-3 bg-white rounded mr-4" style="width: 500px">
+            <h6>Top submissions</h6>
+            <table>
+                <tbody>
+                <tr th:each="submission: ${subreddit.bestSubmissions}">
+                    <td class="growth-number-up" style="width: 75px">
+                        <div class="float-right mr-2">
+                            <span th:text="${submission.upVotes}"></span>
+                            <i class="fas fa-angle-up" data-fa-transform="down-2"></i>
+                        </div>
+                    </td>
+                    <td><a class="table-link" th:text="${submission.title}" th:href="${submission.url}"></a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="shadow-sm p-3 bg-white rounded" style="max-width: 350px">
+            <h6>Average subscribers growth</h6>
+            <p th:text="'Average daily subscriber growth for the past week or month for /r' + ${subreddit.name}"></p>
+            <div class="d-flex">
+                <div class="ml-3 mr-5">
+                    <h6>Weekly average</h6>
+                    <p class="text-center">591</p>
+                </div>
+                <div>
+                    <h6>Monthly average</h6>
+                    <p class="text-center">517</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
