@@ -27,6 +27,8 @@ public class RedditOperations {
         Subreddit subreddit;
         try {
             subreddit = redditClient.subreddit(subredditName).about();
+            if (!subredditRankingService.isSubredditInDb(subredditName))
+                return null;
         } catch (Exception e) {
             return null;
         }

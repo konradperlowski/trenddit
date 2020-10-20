@@ -5,6 +5,7 @@ import trenddit.bean.SubredditMetric;
 import trenddit.bean.SubredditRankedMetric;
 import trenddit.dao.SubredditRankingRepository;
 import trenddit.entity.SubredditRanking;
+import trenddit.entity.SubredditRankingPK;
 
 import javax.persistence.Tuple;
 import java.math.BigDecimal;
@@ -73,6 +74,10 @@ public class SubredditRankingService {
 
     public List<SubredditRanking> getSubredditMetricGrowthOverTime(String subredditName) {
         return subredditRankingRepository.findAllByName(subredditName);
+    }
+
+    public boolean isSubredditInDb(String subredditName) {
+        return subredditRankingRepository.existsById(new SubredditRankingPK(subredditName, ago(0)));
     }
 
     private List<SubredditMetric> getMetricList(String metric, Integer days) {
