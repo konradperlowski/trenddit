@@ -6,7 +6,7 @@ public class SubredditPost {
     private String upVotes;
 
     public SubredditPost(String title, String url, Integer upVotes) {
-        this.title = title.replaceAll("(?<=.{45})\\b.*", "...");
+        this.title = title.replaceAll("(?<=.{44})\\b.*", "...");
         this.url = "https://www.reddit.com" + url;
         this.upVotes = withSuffix(upVotes);
     }
@@ -16,7 +16,7 @@ public class SubredditPost {
         int exp = (int) (Math.log(count) / Math.log(1000));
         return String.format("%.1f %c",
                 count / Math.pow(1000, exp),
-                "kMGTPE".charAt(exp-1));
+                "kMGTPE".charAt(exp - 1));
     }
 
     public String getTitle() {

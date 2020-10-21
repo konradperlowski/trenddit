@@ -33,31 +33,31 @@ public class RedditOperations {
             return null;
         }
         SubredditInfo subredditInfo = new SubredditInfo();
-        subredditInfo.setName(subredditName);
+        subredditInfo.setName(subreddit.getName());
         subredditInfo.setUrl(subreddit.getUrl());
         subredditInfo.setDescription(subreddit.getPublicDescription());
         subredditInfo.setCreatedAt(subreddit.getCreated());
 
-        SubredditRankedMetric subscriberRank = subredditRankingService.getSubredditRankedList(subredditName, "subscribers");
+        SubredditRankedMetric subscriberRank = subredditRankingService.getSubredditRankedList(subreddit.getName(), "subscribers");
         subredditInfo.setSubscribers(subscriberRank.getNumber());
         subredditInfo.setSubscriberRank(subscriberRank.getRank());
 
-        SubredditRankedMetric commentsRank = subredditRankingService.getSubredditRankedList(subredditName, "comments");
+        SubredditRankedMetric commentsRank = subredditRankingService.getSubredditRankedList(subreddit.getName(), "comments");
         subredditInfo.setCommentsPerDay(commentsRank.getNumber());
         subredditInfo.setCommentsPerDayRank(commentsRank.getRank());
 
-        SubredditRankedMetric postsRank = subredditRankingService.getSubredditRankedList(subredditName, "posts");
+        SubredditRankedMetric postsRank = subredditRankingService.getSubredditRankedList(subreddit.getName(), "posts");
         subredditInfo.setPostsPerDay(postsRank.getNumber());
         subredditInfo.setPostsPerDayRank(postsRank.getRank());
 
-        SubredditRankedMetric growthRank = subredditRankingService.getSubredditRankedList(subredditName, "growth");
+        SubredditRankedMetric growthRank = subredditRankingService.getSubredditRankedList(subreddit.getName(), "growth");
         subredditInfo.setGrowthToday(growthRank.getNumber());
         subredditInfo.setGrowthTodayRank(growthRank.getRank());
 
-        subredditInfo.setGrowthWeek(subredditRankingService.getSubredditGrowth(subredditName, 7).getNumber());
-        subredditInfo.setGrowthMonth(subredditRankingService.getSubredditGrowth(subredditName, 30).getNumber());
+        subredditInfo.setGrowthWeek(subredditRankingService.getSubredditGrowth(subreddit.getName(), 7).getNumber());
+        subredditInfo.setGrowthMonth(subredditRankingService.getSubredditGrowth(subreddit.getName(), 30).getNumber());
 
-        DefaultPaginator<Submission> paginator = redditClient.subreddit(subredditName).posts()
+        DefaultPaginator<Submission> paginator = redditClient.subreddit(subreddit.getName()).posts()
                 .limit(5)
                 .sorting(SubredditSort.TOP)
                 .timePeriod(TimePeriod.ALL)
