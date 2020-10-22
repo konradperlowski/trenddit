@@ -19,8 +19,8 @@ def get_subreddit_list():
     return [subreddit for subreddit in reddit.subreddits.popular(limit=None)]
 
 
-def get_last_day_posts(subreddit):
-    return reddit.subreddit(subreddit).top('day', limit=None)
+def get_last_hour_posts(subreddit):
+    return reddit.subreddit(subreddit).top('hour', limit=None)
 
 
 def get_subreddits_rank_by_number_of_daily_posts_and_comments():
@@ -32,5 +32,5 @@ def get_subreddits_rank_by_number_of_daily_posts_and_comments():
 
 
 def unpack_subreddit(subreddit):
-    post_list = list(get_last_day_posts(subreddit.display_name))
+    post_list = list(get_last_hour_posts(subreddit.display_name))
     return subreddit.display_name, len(post_list), sum([post.num_comments for post in post_list])
