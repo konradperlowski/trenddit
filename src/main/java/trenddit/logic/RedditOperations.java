@@ -1,4 +1,4 @@
-package trenddit.service;
+package trenddit.logic;
 
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.models.*;
@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import trenddit.bean.SubredditInfo;
 import trenddit.bean.SubredditPost;
 import trenddit.bean.SubredditRankedMetric;
+import trenddit.service.SubredditRankingService;
 
 import java.util.List;
 import java.util.stream.Collectors;
