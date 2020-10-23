@@ -1,4 +1,4 @@
-# trenddit
+# Trenddit
 Application monitoring reddit's trends
 
 ## Requirements
