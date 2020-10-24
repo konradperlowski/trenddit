@@ -20,7 +20,7 @@ def post_ranking(ranking_list, date):
 def comment_ranking(ranking_list, date):
     trenddit_cursor.executemany(
         'UPDATE subreddit_ranking SET comments=comments+%s WHERE name=%s AND date=%s',
-        [(subreddit[2], subreddit[0], date) for subreddit in ranking_list])
+        [(subreddit[1], subreddit[0], date) for subreddit in ranking_list])
     trenddit_db.commit()
 
 
@@ -28,7 +28,9 @@ def update_subscriber_ranking(date):
     subscribers_ranking(date)
 
 
-def update_rankings(date):
-    ranking = get_subreddits_rank_by_number_of_daily_posts_and_comments()
-    post_ranking(ranking, date)
-    comment_ranking(ranking, date)
+def update_posts(date):
+    print(get_subreddits_rank_by_number_of_last_hour_posts())
+
+
+def update_comments(date):
+    comment_ranking(get_subreddits_rank_by_number_of_last_day_comments(), date)

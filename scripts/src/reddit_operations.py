@@ -1,6 +1,12 @@
 import concurrent.futures
+from json import JSONDecodeError
+
+import requests
 
 from config import *
+
+comment_url = 'https://api.pushshift.io/reddit/comment/search/?size=1&after=24h&metadata=true&subreddit='
+error_list = list()
 
 
 def get_best_subreddit(period_of_time='all', limit=100):
@@ -19,18 +25,41 @@ def get_subreddit_list():
     return [subreddit for subreddit in reddit.subreddits.popular(limit=None)]
 
 
-def get_last_hour_posts(subreddit):
-    return reddit.subreddit(subreddit).top('hour', limit=None)
-
-
-def get_subreddits_rank_by_number_of_daily_posts_and_comments():
+def get_subreddits_rank_by_number_of_last_hour_posts():
     final_list = list()
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        for result in executor.map(unpack_subreddit, get_subreddit_list()):
+        for result in executor.map(get_number_of_posts, get_subreddit_list()):
             final_list.append(result)
     return final_list
 
 
-def unpack_subreddit(subreddit):
-    post_list = list(get_last_hour_posts(subreddit.display_name))
-    return subreddit.display_name, len(post_list), sum([post.num_comments for post in post_list])
+def get_subreddits_rank_by_number_of_last_day_comments():
+    subreddit_list = [subreddit.display_name for subreddit in get_subreddit_list()]
+    return list(filter(None.__ne__, get_subreddits_ranking_by_function(get_number_of_comments, subreddit_list)))
+
+
+def get_subreddits_ranking_by_function(function, data):
+    final_list = list()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+        for result in executor.map(function, data):
+            final_list.append(result)
+    if len(error_list) != 0:
+        return final_list + get_subreddits_ranking_by_function(function, error_list)
+    return final_list
+
+
+def get_number_of_posts(subreddit):
+    post_list = list(reddit.subreddit(subreddit.display_name).top('hour', limit=None))
+    return subreddit.display_name, len(post_list)
+
+
+def get_number_of_comments(subreddit):
+    if subreddit in error_list:
+        error_list.remove(subreddit)
+    try:
+        url = comment_url + subreddit
+        data = requests.get(url=url).json()
+    except JSONDecodeError:
+        error_list.append(subreddit)
+        return None
+    return subreddit, data['metadata']['total_results']
