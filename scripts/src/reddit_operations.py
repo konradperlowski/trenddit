@@ -1,4 +1,5 @@
 import concurrent.futures
+import time
 from json import JSONDecodeError
 
 import requests
@@ -50,6 +51,7 @@ def get_subreddits_ranking_by_function(function, data):
 
 def get_number_of_posts(subreddit):
     post_list = list(reddit.subreddit(subreddit.display_name).top('hour', limit=None))
+    post_list = [post for post in post_list if post.created_utc > time.time() - 3600]
     return subreddit.display_name, len(post_list)
 
 
