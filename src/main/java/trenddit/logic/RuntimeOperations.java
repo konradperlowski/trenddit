@@ -46,16 +46,14 @@ public class RuntimeOperations {
             standardOut.append(outLine);
             standardOut.append('\n');
         }
-
         if (!standardOut.toString().equals("")) {
-            log.info("Output of db update:");
             log.info(standardOut.toString());
         }
+
         while ((outLine = stdError.readLine()) != null) {
             errorOut.append(outLine);
             errorOut.append('\n');
         }
-
         if (!errorOut.toString().equals("")) {
             log.error("Error while updating db:");
             log.error(errorOut.toString());
