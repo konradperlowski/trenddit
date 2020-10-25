@@ -29,7 +29,7 @@ def update_subscriber_ranking(date):
 
 
 def update_posts(date):
-    print(get_subreddits_rank_by_number_of_last_hour_posts())
+    post_ranking(get_subreddits_rank_by_number_of_last_hour_posts(), date)
 
 
 def update_comments(date):
