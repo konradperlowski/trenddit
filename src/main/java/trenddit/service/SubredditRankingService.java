@@ -6,11 +6,10 @@ import trenddit.bean.SubredditRankedMetric;
 import trenddit.dao.SubredditRankingRepository;
 import trenddit.entity.SubredditRanking;
 import trenddit.entity.SubredditRankingPK;
+import trenddit.util.DateUtil;
 
 import javax.persistence.Tuple;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,31 +30,31 @@ public class SubredditRankingService {
     }
 
     public List<SubredditRanking> getTodayMostCommented() {
-        return subredditRankingRepository.findTop10ByDateOrderByCommentsDesc(new Date());
+        return subredditRankingRepository.findTop10ByDateOrderByCommentsDesc(DateUtil.ago(1));
     }
 
     public List<SubredditMetric> getAverageComments(Integer days) {
         return mapToSubredditMetric(subredditRankingRepository.findAverageComments(
-                daysAgo(0), daysAgo(days)), "comments");
+                DateUtil.daysAgo(1), DateUtil.daysAgo(days)), "comments");
     }
 
     public List<SubredditRanking> getTodayMostPosted() {
-        return subredditRankingRepository.findTop10ByDateOrderByPostsDesc(new Date());
+        return subredditRankingRepository.findTop10ByDateOrderByPostsDesc(DateUtil.ago(1));
     }
 
     public List<SubredditMetric> getAveragePosted(Integer days) {
         return mapToSubredditMetric(subredditRankingRepository.findAveragePosts(
-                daysAgo(0), daysAgo(days)), "posts");
+                DateUtil.daysAgo(1), DateUtil.daysAgo(days)), "posts");
     }
 
     public List<SubredditMetric> getSubredditsGrowth(Integer days, Integer limit) {
         return mapToSubredditMetric(subredditRankingRepository.findSubredditsGrowth(
-                daysAgo(0), daysAgo(days), days, limit == null ? 9999 : limit), "growth");
+                DateUtil.daysAgo(0), DateUtil.daysAgo(days), days, limit == null ? 9999 : limit), "growth");
     }
 
     public SubredditMetric getSubredditGrowth(String subreddit, Integer days) {
         return mapToSubredditMetric(subredditRankingRepository.findSubredditGrowth(
-                subreddit, daysAgo(0), daysAgo(days), days), "growth");
+                subreddit, DateUtil.daysAgo(0), DateUtil.daysAgo(days), days), "growth");
     }
 
     public SubredditRankedMetric getSubredditRankedList(String subredditName, String metric) {
@@ -77,7 +76,7 @@ public class SubredditRankingService {
     }
 
     public boolean isSubredditInDb(String subredditName) {
-        return subredditRankingRepository.existsById(new SubredditRankingPK(subredditName, ago(0)));
+        return subredditRankingRepository.existsById(new SubredditRankingPK(subredditName, DateUtil.ago(0)));
     }
 
     private List<SubredditMetric> getMetricList(String metric, Integer days) {
@@ -104,19 +103,4 @@ public class SubredditRankingService {
     private List<SubredditMetric> mapToSubredditMetric(List<Tuple> tupleList, String metricName) {
         return tupleList.stream().map(tuple -> mapToSubredditMetric(tuple, metricName)).collect(Collectors.toList());
     }
-
-    private String daysAgo(Integer days) {
-        return dateToString(ago(days));
-    }
-
-    private Date ago(Integer days) {
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -days);
-        return cal.getTime();
-    }
-
-    private String dateToString(Date date) {
-        return new SimpleDateFormat("yyyy-MM-dd").format(date);
-    }
-
 }
