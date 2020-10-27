@@ -31,9 +31,9 @@
                 <table id="growthTableDay" class="table table-hover table-bordered table-striped" style="width: 100%">
                     <thead>
                     <tr>
-                        <th style="width: 10%">Rank</th>
-                        <th style="width: 65%">Subreddit</th>
-                        <th style="width: 25%">Growth</th>
+                        <th class="w-90">Rank</th>
+                        <th>Subreddit</th>
+                        <th class="w-90">Growth</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -41,7 +41,13 @@
                         <td th:text="${iter.index} + 1"></td>
                         <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
                                th:href="'/subreddit/' + ${subreddit.name}"></a></td>
-                        <td th:text="${subreddit.number}"></td>
+                        <td th:class="${subreddit.number > 0 ? 'growth-number-up' : 'growth-number-down'}">
+                            <div class="d-flex float-right">
+                                <span class="mr-2" th:text="${subreddit.number}"></span>
+                                <i class="mr-1" data-fa-transform="down-4"
+                                   th:classappend="${subreddit.number > 0 ? 'fas fa-angle-up' : 'fas fa-angle-down'}"></i>
+                            </div>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -50,17 +56,23 @@
                 <table id="growthTableWeek" class="table table-hover table-bordered table-striped" style="width: 100%">
                     <thead>
                     <tr>
-                        <th style="width: 10%">Rank</th>
-                        <th style="width: 65%">Subreddit</th>
-                        <th style="width: 25%">Growth</th>
+                        <th>Rank</th>
+                        <th>Subreddit</th>
+                        <th>Growth</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="subreddit, iter: ${growthWeek}">
-                        <td th:text="${iter.index} + 1"></td>
+                        <td class="w-90" th:text="${iter.index} + 1"></td>
                         <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
                                th:href="'/subreddit/' + ${subreddit.name}"></a></td>
-                        <td th:text="${subreddit.number}"></td>
+                        <td th:class="${subreddit.number > 0 ? 'growth-number-up' : 'growth-number-down'}">
+                            <div class="d-flex float-right">
+                                <span class="mr-2" th:text="${subreddit.number}"></span>
+                                <i class="mr-1" data-fa-transform="down-4"
+                                   th:classappend="${subreddit.number > 0 ? 'fas fa-angle-up' : 'fas fa-angle-down'}"></i>
+                            </div>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -69,17 +81,23 @@
                 <table id="growthTableMonth" class="table table-hover table-bordered table-striped" style="width: 100%">
                     <thead>
                     <tr>
-                        <th style="width: 10%">Rank</th>
-                        <th style="width: 65%">Subreddit</th>
-                        <th style="width: 25%">Growth</th>
+                        <th>Rank</th>
+                        <th>Subreddit</th>
+                        <th>Growth</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="subreddit, iter: ${growthMonth}">
-                        <td th:text="${iter.index} + 1"></td>
+                        <td class="w-90" th:text="${iter.index} + 1"></td>
                         <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
                                th:href="'/subreddit/' + ${subreddit.name}"></a></td>
-                        <td th:text="${subreddit.number}"></td>
+                        <td th:class="${subreddit.number > 0 ? 'growth-number-up' : 'growth-number-down'}">
+                            <div class="d-flex float-right">
+                                <span class="mr-2" th:text="${subreddit.number}"></span>
+                                <i class="mr-1" data-fa-transform="down-4"
+                                   th:classappend="${subreddit.number > 0 ? 'fas fa-angle-up' : 'fas fa-angle-down'}"></i>
+                            </div>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

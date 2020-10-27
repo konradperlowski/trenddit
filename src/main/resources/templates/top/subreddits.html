@@ -21,17 +21,17 @@
             <table id="subscribersTable" class="table table-hover table-bordered table-striped" style="width: 100%">
                 <thead>
                 <tr>
-                    <th style="width: 10%">Rank</th>
-                    <th style="width: 65%">Subreddit</th>
-                    <th style="width: 25%">Subscribers</th>
+                    <th class="w-90">Rank</th>
+                    <th>Subreddit</th>
+                    <th class="w-90">Subscribers</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="subreddit, iter: ${subscribersList}">
-                    <td th:text="${iter.index} + 1"></td>
+                    <td class="w-90" th:text="${iter.index} + 1"></td>
                     <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
                            th:href="'/subreddit/' + ${subreddit.name}"></a></td>
-                    <td th:text="${subreddit.number}"></td>
+                    <td class="text-right" th:text="${subreddit.number}"></td>
                 </tr>
                 </tbody>
             </table>
