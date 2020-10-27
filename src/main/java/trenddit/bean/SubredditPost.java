@@ -11,7 +11,7 @@ public class SubredditPost {
         this.upVotes = withSuffix(upVotes);
     }
 
-    public static String withSuffix(int count) {
+    private String withSuffix(int count) {
         if (count < 1000) return "" + count;
         int exp = (int) (Math.log(count) / Math.log(1000));
         return String.format("%.1f %c",

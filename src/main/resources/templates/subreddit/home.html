@@ -68,14 +68,11 @@
     <h5 class="mt-4 mb-4">Number of posts over last month</h5>
     <canvas id="growth-posts" class="growth-chart mb-5"></canvas>
     <script th:inline="javascript">
-        /*<![CDATA[*/
-        let subreddit = /*[[${subreddit.name}]]*/ null;
-        /*]]>*/
-        drawGrowthChart(subreddit);
+        drawGrowthChart(/*[[${subreddit.name}]]*/ null);
     </script>
 
     <div class="d-flex mb-5">
-        <div class="shadow-sm p-3 bg-white rounded mr-4" style="width: 500px">
+        <div class="shadow-sm p-3 bg-white rounded mr-3" style="width: 510px">
             <h6>Top submissions</h6>
             <table>
                 <tbody>
