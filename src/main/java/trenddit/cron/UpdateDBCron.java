@@ -35,7 +35,7 @@ public class UpdateDBCron {
         else log.error("Update failed");
     }
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 0 22 * * *")
     public void updateComments() throws IOException, InterruptedException {
         log.info("Update subreddit comments started...");
         int exitCode = runtimeOperations.execCommand("python3 scripts/src/update_comments.py");

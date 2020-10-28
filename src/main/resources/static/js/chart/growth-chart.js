@@ -48,7 +48,7 @@ function drawChart(canvasId, dates, values, label) {
                     afterTickToLabelConversion: data => {
                         const xLabels = data.ticks;
                         xLabels.forEach((labels, i) => {
-                            if (i % 2 === 1) {
+                            if (i % 3 !== 0) {
                                 xLabels[i] = '';
                             }
                         });
