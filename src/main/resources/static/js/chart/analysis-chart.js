@@ -13,21 +13,21 @@ async function drawAnalysisChart() {
         method: 'get',
         dataType: 'json'
     }).done(response => {
-        for (let data in response) {
+        for (const data in response) {
             dates.push(data)
             response[data].forEach(s => namesOccurrences[s.name] = (namesOccurrences[s.name] || 0) + 1)
         }
 
         let len = dates.length;
 
-        for (let name in namesOccurrences) {
+        for (const name in namesOccurrences) {
             if (namesOccurrences[name] === len)
                 names.push(name)
         }
 
         names.forEach(name => {
             subredditDict[name] = []
-            for (let data in response) {
+            for (const data in response) {
                 let isPresent = false
                 response[data].forEach(s => {
                     if (s.name === name) {
@@ -41,7 +41,7 @@ async function drawAnalysisChart() {
         })
     })
 
-    for (let subreddit in subredditDict) {
+    for (const subreddit in subredditDict) {
         datasets.push({
             label: subreddit,
             data: subredditDict[subreddit],
@@ -76,7 +76,7 @@ function drawChart(dates, datasets) {
                 yAxes: [{
                     ticks: {
                         reverse: true,
-                        callback: function (value) {
+                        callback: value => {
                             if (value % 1 === 0) {
                                 return value;
                             }
