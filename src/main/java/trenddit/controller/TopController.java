@@ -46,4 +46,10 @@ public class TopController {
         model.addAttribute("subscribersList", subredditRankingService.getSubscriberRanking());
         return "top/subreddits";
     }
+
+    @GetMapping("/analysis")
+    public String topAnalyze(Model model) {
+
+        return "top/analysis";
+    }
 }
