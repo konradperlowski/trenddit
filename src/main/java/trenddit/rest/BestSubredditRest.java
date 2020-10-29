@@ -21,27 +21,27 @@ public class BestSubredditRest {
         this.bestSubredditService = bestSubredditService;
     }
 
-    @RequestMapping(value = "/all-time", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/all-time", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<BestSubredditAllTime> getBestAllTime() {
         return bestSubredditService.getBestAllTime();
     }
 
-    @RequestMapping(value = "/year", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/year", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<BestSubredditYearly> getBestYear() {
         return bestSubredditService.getBestYearly();
     }
 
-    @RequestMapping(value = "/month", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/month", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<BestSubredditMonthly> getBestMonth() {
         return bestSubredditService.getBestMonthly();
     }
 
-    @RequestMapping(value = "/week", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/week", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<BestSubredditWeekly> getBestWeek() {
         return bestSubredditService.getBestWeekly();
     }
 
-    @RequestMapping(value = "/day", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/day", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<BestSubredditDaily> getBestDay() {
         return bestSubredditService.getBestDaily(new Date());
     }
