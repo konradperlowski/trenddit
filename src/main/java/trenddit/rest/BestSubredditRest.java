@@ -1,9 +1,7 @@
 package trenddit.rest;
 
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import trenddit.bean.SubredditMetric;
 import trenddit.entity.*;
 import trenddit.service.BestSubredditService;
@@ -48,7 +46,8 @@ public class BestSubredditRest {
     }
 
     @GetMapping(value = "/analysis", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, List<SubredditMetric>> getAnalysis() {
-        return bestSubredditService.getForAnalysis();
+    public Map<String, List<SubredditMetric>> getAnalysis(@RequestParam("from") Integer from,
+                                                          @RequestParam("limit") Integer limit) {
+        return bestSubredditService.getForAnalysis(from, limit);
     }
 }

@@ -4,10 +4,36 @@
 <body>
 <nav th:replace="common/navbar :: common-navbar"></nav>
 <div class="container">
-    <div class="mb-5">
+    <div class="mb-2">
         <h2 class="mt-4 mb-3">Top analysis</h2>
         <span>Analysis subreddits based on their appearance in top r/all</span>
     </div>
+
+    <label class="float-right">
+        Max rank:
+        <select class="form-control form-control-sm" id="max-rank-select" onchange="drawAnalysisChart()">
+            <option value="5">5</option>
+            <option value="10" selected="selected">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="25">25</option>
+            <option value="30">30</option>
+            <option value="35">35</option>
+            <option value="40">40</option>
+            <option value="45">45</option>
+            <option value="50">50</option>
+        </select>
+    </label>
+
+    <label class="float-right mr-3">
+        Period of time:
+        <select class="form-control form-control-sm" id="from-days-select" onchange="drawAnalysisChart()">
+            <option value="7">One week</option>
+            <option value="14" selected="selected">Two weeks</option>
+            <option value="21">Three weeks</option>
+            <option value="28">Four weeks</option>
+        </select>
+    </label>
 
     <canvas id="top-analysis" class="growth-chart mb-5"></canvas>
     <script>

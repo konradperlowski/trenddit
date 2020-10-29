@@ -1,18 +1,28 @@
+let analysisChart = null
+
 async function drawAnalysisChart() {
 
     let subredditDict = {}
-    let names = new Set()
+    let names = []
+    let namesOccurrences = {}
     let dates = []
     let datasets = []
 
     await $.ajax({
-        url: '/api/best/analysis',
+        url: '/api/best/analysis?from=' + $("#from-days-select").val() + '&limit=' + $("#max-rank-select").val(),
         method: 'get',
         dataType: 'json'
     }).done(response => {
         for (let data in response) {
             dates.push(data)
-            response[data].forEach(s => names.add(s.name))
+            response[data].forEach(s => namesOccurrences[s.name] = (namesOccurrences[s.name] || 0) + 1)
+        }
+
+        let len = dates.length;
+
+        for (let name in namesOccurrences) {
+            if (namesOccurrences[name] === len)
+                names.push(name)
         }
 
         names.forEach(name => {
@@ -52,7 +62,10 @@ function random_rgb() {
 
 
 function drawChart(dates, datasets) {
-    new Chart(document.getElementById('top-analysis').getContext("2d"), {
+    if (analysisChart !== null)
+        analysisChart.destroy()
+
+    analysisChart = new Chart(document.getElementById('top-analysis').getContext("2d"), {
         type: 'line',
         data: {
             labels: dates,

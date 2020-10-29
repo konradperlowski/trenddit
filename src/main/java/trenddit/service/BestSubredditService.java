@@ -54,17 +54,17 @@ public class BestSubredditService {
         return subredditDailyRepository.findByDateOrderByNumberDesc(date);
     }
 
-    public Map<String, List<SubredditMetric>> getForAnalysis() {
+    public Map<String, List<SubredditMetric>> getForAnalysis(Integer from, Integer limit) {
         Map<String, List<SubredditMetric>> result = new LinkedHashMap<>();
-        DateUtil.periodOfTime(30, 0)
-                .forEach(date -> result.put(DateUtil.dateToString(date), getRankedBestForDate(date)));
+        DateUtil.periodOfTime(from, 0)
+                .forEach(date -> result.put(DateUtil.dateToString(date), getRankedBestForDate(date, limit)));
         result.entrySet().removeIf(entry -> entry.getValue().isEmpty());
         return result;
     }
 
-    private List<SubredditMetric> getRankedBestForDate(Date date) {
+    private List<SubredditMetric> getRankedBestForDate(Date date, Integer limit) {
         return changeNumberToRank(subredditDailyRepository.findByDateOrderByNumberDesc(date)
-                .stream().limit(5).collect(Collectors.toList()))
+                .stream().limit(limit).collect(Collectors.toList()))
                 .stream().map(s -> new SubredditMetric(s.getName(), s.getNumber())).collect(Collectors.toList());
     }
 
