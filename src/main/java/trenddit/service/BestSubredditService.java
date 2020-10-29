@@ -1,12 +1,12 @@
 package trenddit.service;
 
 import org.springframework.stereotype.Service;
+import trenddit.bean.SubredditMetric;
 import trenddit.dao.*;
 import trenddit.entity.*;
 import trenddit.util.DateUtil;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,12 +54,24 @@ public class BestSubredditService {
         return subredditDailyRepository.findByDateOrderByNumberDesc(date);
     }
 
-    public List<BestSubredditDaily> getForAnalysis() {
-        return DateUtil.periodOfTime(30, 0)
-                .stream()
-                .map(date -> subredditDailyRepository.findByDateOrderByNumberDesc(date)
-                        .stream().limit(7).collect(Collectors.toList()))
-                .flatMap(List::stream)
-                .collect(Collectors.toList());
+    public Map<String, List<SubredditMetric>> getForAnalysis() {
+        Map<String, List<SubredditMetric>> result = new LinkedHashMap<>();
+        DateUtil.periodOfTime(30, 0)
+                .forEach(date -> result.put(DateUtil.dateToString(date), getRankedBestForDate(date)));
+        result.entrySet().removeIf(entry -> entry.getValue().isEmpty());
+        return result;
+    }
+
+    private List<SubredditMetric> getRankedBestForDate(Date date) {
+        return changeNumberToRank(subredditDailyRepository.findByDateOrderByNumberDesc(date)
+                .stream().limit(5).collect(Collectors.toList()))
+                .stream().map(s -> new SubredditMetric(s.getName(), s.getNumber())).collect(Collectors.toList());
+    }
+
+    private List<BestSubredditDaily> changeNumberToRank(List<BestSubredditDaily> bestSubredditDailyList) {
+        for (int i = 1; i <= bestSubredditDailyList.size(); i++) {
+            bestSubredditDailyList.get(i - 1).setNumber(i);
+        }
+        return bestSubredditDailyList;
     }
 }
