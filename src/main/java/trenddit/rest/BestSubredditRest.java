@@ -1,6 +1,7 @@
 package trenddit.rest;
 
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,5 +44,10 @@ public class BestSubredditRest {
     @RequestMapping(value = "/day", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<BestSubredditDaily> getBestDay() {
         return bestSubredditService.getBestDaily(new Date());
+    }
+
+    @GetMapping(value = "/analysis", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<BestSubredditDaily> getAnalysis() {
+        return bestSubredditService.getForAnalysis();
     }
 }

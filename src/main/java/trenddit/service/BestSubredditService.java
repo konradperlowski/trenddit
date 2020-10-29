@@ -3,9 +3,11 @@ package trenddit.service;
 import org.springframework.stereotype.Service;
 import trenddit.dao.*;
 import trenddit.entity.*;
+import trenddit.util.DateUtil;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BestSubredditService {
@@ -50,5 +52,14 @@ public class BestSubredditService {
 
     public List<BestSubredditDaily> getBestDaily(Date date) {
         return subredditDailyRepository.findByDateOrderByNumberDesc(date);
+    }
+
+    public List<BestSubredditDaily> getForAnalysis() {
+        return DateUtil.periodOfTime(30, 0)
+                .stream()
+                .map(date -> subredditDailyRepository.findByDateOrderByNumberDesc(date)
+                        .stream().limit(7).collect(Collectors.toList()))
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
     }
 }
