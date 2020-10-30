@@ -24,6 +24,12 @@ def comment_ranking(ranking_list, date):
     trenddit_db.commit()
 
 
+def get_comment_ranking(date):
+    trenddit_cursor.execute('SELECT ROW_NUMBER() OVER (ORDER BY comments DESC) n, name, comments '
+                            'FROM subreddit_ranking WHERE date=%s ORDER BY comments DESC', (date,))
+    return trenddit_cursor.fetchall()
+
+
 def update_subscriber_ranking(date):
     subscribers_ranking(date)
 
