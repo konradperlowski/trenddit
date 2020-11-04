@@ -51,17 +51,6 @@ async function drawAnalysisChart() {
         })
     }
 
-    drawChart(dates, datasets)
-}
-
-function random_rgb() {
-    return "rgb(" + Math.floor(Math.random() * 255) + "," +
-        Math.floor(Math.random() * 255) + "," +
-        Math.floor(Math.random() * 255) + ")";
-}
-
-
-function drawChart(dates, datasets) {
     if (analysisChart !== null)
         analysisChart.destroy()
 
@@ -96,4 +85,10 @@ function drawChart(dates, datasets) {
             }
         }
     })
+}
+
+function random_rgb() {
+    return "rgb(" + Math.floor(Math.random() * 255) + "," +
+        Math.floor(Math.random() * 255) + "," +
+        Math.floor(Math.random() * 255) + ")";
 }
