@@ -54,5 +54,5 @@ public interface SubredditRankingRepository extends CrudRepository<SubredditRank
             @Param("today") String today,
             @Param("date_from") String from);
 
-    List<SubredditRanking> findAllByName(String name);
+    List<SubredditRanking> findAllByNameOrderByDateDesc(String name);
 }

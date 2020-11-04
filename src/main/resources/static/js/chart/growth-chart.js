@@ -6,7 +6,7 @@ async function drawGrowthChart(subreddit) {
 
 
     await $.ajax({
-        url: '/api/growth/metric/' + subreddit,
+        url: '/api/growth/metric/' + subreddit + '?limit=31',
         method: 'get',
         dataType: 'json'
     }).done(response => {

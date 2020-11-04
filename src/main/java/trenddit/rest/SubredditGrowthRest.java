@@ -27,9 +27,11 @@ public class SubredditGrowthRest {
     }
 
     @GetMapping(value = "/metric/{subreddit}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<SubredditRanking> getSubredditSubscribersOverMonth(@PathVariable String subreddit) {
-        return subredditRankingService.getSubredditMetricGrowthOverTime(subreddit).stream()
-                .filter(subredditRanking -> !DateUtil.dateToString(subredditRanking.getDate()).equals(DateUtil.daysAgo(0)))
+    public List<SubredditRanking> getSubredditSubscribersOverMonth(@PathVariable String subreddit,
+                                                                   @RequestParam(required = false) Integer limit) {
+        return subredditRankingService.getSubredditMetricGrowthOverTime(subreddit, limit).stream()
+                .filter(subredditRanking ->
+                        !DateUtil.dateToString(subredditRanking.getDate()).equals(DateUtil.daysAgo(0)))
                 .collect(Collectors.toList());
     }
 }

@@ -10,6 +10,7 @@ import trenddit.util.DateUtil;
 
 import javax.persistence.Tuple;
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -71,8 +72,11 @@ public class SubredditRankingService {
                 .findAny().orElse(null);
     }
 
-    public List<SubredditRanking> getSubredditMetricGrowthOverTime(String subredditName) {
-        return subredditRankingRepository.findAllByName(subredditName);
+    public List<SubredditRanking> getSubredditMetricGrowthOverTime(String subredditName, Integer limit) {
+        if (limit == null) return subredditRankingRepository.findAllByNameOrderByDateDesc(subredditName);
+        return subredditRankingRepository.findAllByNameOrderByDateDesc(subredditName)
+                .stream().limit(limit).sorted(Comparator.comparing(SubredditRanking::getDate))
+                .collect(Collectors.toList());
     }
 
     public boolean isSubredditInDb(String subredditName) {
