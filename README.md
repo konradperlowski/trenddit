@@ -11,4 +11,4 @@ Application monitoring reddit's trends
 - create user `trenddit`: `CREATE USER trenddit@localhost IDENTIFIED BY 'password';`, `GRANT ALL PRIVILEGES ON Trenddit.* TO trenddit@localhost;`
 
 ### Database updates
-Database updates every midnight, but in order to update data properly you need to install requirements `pip3 install -r scripts/requirements.txt`
+In order to update data properly you need to install requirements `pip3 install -r scripts/requirements.txt`
