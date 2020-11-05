@@ -46,7 +46,7 @@ public class BestSubredditRest {
     }
 
     @GetMapping(value = "/analysis", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, List<SubredditMetric>> getAnalysis(@RequestParam("from") Integer from,
+    public Map<String, List<Integer>> getAnalysis(@RequestParam("from") Integer from,
                                                           @RequestParam("limit") Integer limit) {
         return bestSubredditService.getForAnalysis(from, limit);
     }

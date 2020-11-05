@@ -2,54 +2,25 @@ let analysisChart = null
 
 async function drawAnalysisChart() {
 
-    let subredditDict = {}
-    let names = []
-    let namesOccurrences = {}
-    let dates = []
     let datasets = []
+    const limit = parseInt($("#from-days-select").val())
+    const dates = [...Array(limit).keys()].map(i => daysAgo(i))
 
     await $.ajax({
-        url: '/api/best/analysis?from=' + $("#from-days-select").val() + '&limit=' + $("#max-rank-select").val(),
+        url: '/api/best/analysis?from=' + limit + '&limit=' + $("#max-rank-select").val(),
         method: 'get',
         dataType: 'json'
     }).done(response => {
-        for (const data in response) {
-            dates.push(data)
-            response[data].forEach(s => namesOccurrences[s.name] = (namesOccurrences[s.name] || 0) + 1)
-        }
-
-        let len = dates.length;
-
-        for (const name in namesOccurrences) {
-            if (namesOccurrences[name] === len)
-                names.push(name)
-        }
-
-        names.forEach(name => {
-            subredditDict[name] = []
-            for (const data in response) {
-                let isPresent = false
-                response[data].forEach(s => {
-                    if (s.name === name) {
-                        isPresent = true
-                        subredditDict[name].push(s.number)
-                    }
-                })
-                if (!isPresent)
-                    subredditDict[name].push(null)
-            }
+        $.each(response, (subreddit, values) => {
+            datasets.push({
+                label: subreddit,
+                data: values,
+                backgroundColor: 'rgba(0, 0, 0, 0)',
+                borderColor: random_rgb(),
+                borderWidth: 3
+            })
         })
     })
-
-    for (const subreddit in subredditDict) {
-        datasets.push({
-            label: subreddit,
-            data: subredditDict[subreddit],
-            backgroundColor: 'rgba(0, 0, 0, 0)',
-            borderColor: random_rgb(),
-            borderWidth: 3
-        })
-    }
 
     if (analysisChart !== null)
         analysisChart.destroy()
@@ -57,7 +28,7 @@ async function drawAnalysisChart() {
     analysisChart = new Chart(document.getElementById('top-analysis').getContext("2d"), {
         type: 'line',
         data: {
-            labels: dates,
+            labels: dates.reverse(),
             datasets: datasets
         },
         options: {
@@ -88,7 +59,14 @@ async function drawAnalysisChart() {
 }
 
 function random_rgb() {
-    return "rgb(" + Math.floor(Math.random() * 255) + "," +
-        Math.floor(Math.random() * 255) + "," +
+    return "rgb(" + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + "," +
         Math.floor(Math.random() * 255) + ")";
+}
+
+function daysAgo(days) {
+    let date = new Date()
+    date.setDate(date.getDate() - days)
+
+    return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' +
+        String(date.getDate()).padStart(2, '0');
 }

@@ -24,7 +24,7 @@ public class DateUtil {
 
     public static List<Date> periodOfTime(Integer from, Integer to) {
         List<Date> dateList = new ArrayList<>();
-        for (int i = to; i < from; i++) {
+        for (int i = from - 1; i >= to; i--) {
             dateList.add(ago(i));
         }
         return dateList;
