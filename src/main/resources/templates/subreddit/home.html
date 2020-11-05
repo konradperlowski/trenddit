@@ -50,7 +50,7 @@
             </div>
         </div>
 
-        <div class="shadow-sm p-3 bg-white rounded d-flex"data-toggle="tooltip" data-placement="top"
+        <div class="shadow-sm p-3 bg-white rounded d-flex" data-toggle="tooltip" data-placement="top"
              title="Subscribers growth from last day">
             <div class="mr-3">
                 <h6>Growth today</h6>
@@ -72,7 +72,7 @@
     <h5 class="mt-4 mb-4">Number of posts over last month</h5>
     <canvas id="growth-posts" class="growth-chart mb-5"></canvas>
     <script th:inline="javascript">
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
         });
         drawGrowthChart(/*[[${subreddit.name}]]*/ null);
