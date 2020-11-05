@@ -63,7 +63,7 @@ public class SubredditRankingService {
     }
 
     public SubredditRankedMetric getSubredditRankedList(String subredditName, String metric, Integer days) {
-        List<SubredditMetric> subredditsGrowth = getMetricList(metric, 1);
+        List<SubredditMetric> subredditsGrowth = getMetricList(metric, days);
         if (subredditsGrowth == null) return null;
         final int[] i = {1};
         List<SubredditRankedMetric> subredditsGrowthRanked = subredditsGrowth.stream()
