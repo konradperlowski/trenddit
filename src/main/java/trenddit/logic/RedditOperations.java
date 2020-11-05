@@ -43,11 +43,11 @@ public class RedditOperations {
         subredditInfo.setSubscribers(subscriberRank.getNumber());
         subredditInfo.setSubscriberRank(subscriberRank.getRank());
 
-        SubredditRankedMetric commentsRank = subredditRankingService.getSubredditRankedList(subreddit.getName(), "comments");
+        SubredditRankedMetric commentsRank = subredditRankingService.getSubredditRankedList(subreddit.getName(), "comments", 30);
         subredditInfo.setCommentsPerDay(commentsRank.getNumber());
         subredditInfo.setCommentsPerDayRank(commentsRank.getRank());
 
-        SubredditRankedMetric postsRank = subredditRankingService.getSubredditRankedList(subreddit.getName(), "posts");
+        SubredditRankedMetric postsRank = subredditRankingService.getSubredditRankedList(subreddit.getName(), "posts", 30);
         subredditInfo.setPostsPerDay(postsRank.getNumber());
         subredditInfo.setPostsPerDayRank(postsRank.getRank());
 

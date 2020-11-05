@@ -14,7 +14,8 @@
     </div>
 
     <div class="d-flex mb-5 ml-4">
-        <div class="shadow-sm p-3 bg-white rounded d-flex mr-4">
+        <div class="shadow-sm p-3 bg-white rounded d-flex mr-4" data-toggle="tooltip" data-placement="top"
+             title="Total number of subreddit's subscribers">
             <div class="mr-3">
                 <h6>Subscribers</h6>
                 <p class="text-center" th:text="${subreddit.subscribers}"></p>
@@ -25,7 +26,8 @@
             </div>
         </div>
 
-        <div class="shadow-sm p-3 bg-white rounded d-flex mr-4">
+        <div class="shadow-sm p-3 bg-white rounded d-flex mr-4" data-toggle="tooltip" data-placement="top"
+             title="Average number of comments from last month">
             <div class="mr-3">
                 <h6>Comments per day</h6>
                 <p class="text-center" th:text="${subreddit.commentsPerDay}"></p>
@@ -36,7 +38,8 @@
             </div>
         </div>
 
-        <div class="shadow-sm p-3 bg-white rounded d-flex mr-4">
+        <div class="shadow-sm p-3 bg-white rounded d-flex mr-4" data-toggle="tooltip" data-placement="top"
+             title="Average number of posts from last month">
             <div class="mr-3">
                 <h6>Posts per day</h6>
                 <p class="text-center" th:text="${subreddit.postsPerDay}"></p>
@@ -47,7 +50,8 @@
             </div>
         </div>
 
-        <div class="shadow-sm p-3 bg-white rounded d-flex">
+        <div class="shadow-sm p-3 bg-white rounded d-flex"data-toggle="tooltip" data-placement="top"
+             title="Subscribers growth from last day">
             <div class="mr-3">
                 <h6>Growth today</h6>
                 <p class="text-center" th:text="${subreddit.growthToday}"></p>
@@ -68,6 +72,9 @@
     <h5 class="mt-4 mb-4">Number of posts over last month</h5>
     <canvas id="growth-posts" class="growth-chart mb-5"></canvas>
     <script th:inline="javascript">
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
         drawGrowthChart(/*[[${subreddit.name}]]*/ null);
     </script>
 
