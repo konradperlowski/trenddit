@@ -55,4 +55,13 @@ public interface SubredditRankingRepository extends CrudRepository<SubredditRank
             @Param("date_from") String from);
 
     List<SubredditRanking> findAllByNameOrderByDateDesc(String name);
+
+    @Query(value = "SELECT NAME, CAST(AVG(comments/posts) AS DECIMAL (4)) AS activity " +
+            "FROM subreddit_ranking " +
+            "WHERE date BETWEEN :from AND :to GROUP BY name ORDER BY activity DESC",
+            nativeQuery = true)
+    List<Tuple> findSubredditsActivity(
+            @Param("from") String from,
+            @Param("to") String to
+    );
 }

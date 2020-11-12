@@ -83,6 +83,11 @@ public class SubredditRankingService {
                 .collect(Collectors.toList());
     }
 
+    public List<SubredditMetric> getSubredditsActivity() {
+        return mapToSubredditMetric(subredditRankingRepository.findSubredditsActivity(
+                DateUtil.daysAgo(31), DateUtil.daysAgo(1)), "activity");
+    }
+
     public boolean isSubredditInDb(String subredditName) {
         return subredditRankingRepository.existsById(new SubredditRankingPK(subredditName, DateUtil.ago(0)));
     }
