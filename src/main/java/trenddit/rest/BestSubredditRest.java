@@ -2,7 +2,6 @@ package trenddit.rest;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import trenddit.bean.SubredditMetric;
 import trenddit.entity.*;
 import trenddit.service.BestSubredditService;
 
