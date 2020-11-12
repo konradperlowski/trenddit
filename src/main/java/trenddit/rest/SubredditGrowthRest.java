@@ -2,6 +2,7 @@ package trenddit.rest;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import trenddit.bean.SubredditDoubleMetric;
 import trenddit.bean.SubredditMetric;
 import trenddit.entity.SubredditRanking;
 import trenddit.service.SubredditRankingService;
@@ -33,5 +34,10 @@ public class SubredditGrowthRest {
                 .filter(subredditRanking ->
                         !DateUtil.dateToString(subredditRanking.getDate()).equals(DateUtil.daysAgo(0)))
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping(value = "activity", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<SubredditDoubleMetric> getSubredditsActivityGrowth() {
+        return subredditRankingService.getSubredditsActivityGrowth();
     }
 }

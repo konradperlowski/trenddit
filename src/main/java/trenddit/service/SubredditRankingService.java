@@ -1,6 +1,7 @@
 package trenddit.service;
 
 import org.springframework.stereotype.Service;
+import trenddit.bean.SubredditDoubleMetric;
 import trenddit.bean.SubredditMetric;
 import trenddit.bean.SubredditRankedMetric;
 import trenddit.dao.SubredditRankingRepository;
@@ -83,13 +84,27 @@ public class SubredditRankingService {
                 .collect(Collectors.toList());
     }
 
-    public List<SubredditMetric> getSubredditsActivity() {
-        return mapToSubredditMetric(subredditRankingRepository.findSubredditsActivity(
-                DateUtil.daysAgo(31), DateUtil.daysAgo(1)), "activity");
+    public List<SubredditDoubleMetric> getSubredditsActivity(Integer from, Integer to) {
+        return mapToSubredditDoubleMetric(subredditRankingRepository.findSubredditsActivity(
+                DateUtil.daysAgo(from), DateUtil.daysAgo(to)));
     }
 
     public boolean isSubredditInDb(String subredditName) {
         return subredditRankingRepository.existsById(new SubredditRankingPK(subredditName, DateUtil.ago(0)));
+    }
+
+    public List<SubredditDoubleMetric> getSubredditsActivityGrowth() {
+        List<SubredditDoubleMetric> lastMonthActivity = getSubredditsActivity(31, 1);
+        List<SubredditDoubleMetric> yesterdayActivity = getSubredditsActivity(8, 8);
+
+        return yesterdayActivity.stream()
+                .map(s -> new SubredditDoubleMetric(s.getName(), s.getNumber() / lastMonthActivity.stream()
+                        .filter(ss -> ss.getName().equals(s.getName()))
+                        .findFirst()
+                        .orElse(new SubredditDoubleMetric(s.getName(), 1.)).getNumber()))
+                .sorted(Comparator.comparing(SubredditDoubleMetric::getNumber).reversed())
+                .filter(s -> !Double.isNaN(s.getNumber()))
+                .collect(Collectors.toList());
     }
 
     private List<SubredditMetric> getMetricList(String metric, Integer days) {
@@ -115,5 +130,15 @@ public class SubredditRankingService {
 
     private List<SubredditMetric> mapToSubredditMetric(List<Tuple> tupleList, String metricName) {
         return tupleList.stream().map(tuple -> mapToSubredditMetric(tuple, metricName)).collect(Collectors.toList());
+    }
+
+    private SubredditDoubleMetric mapToSubredditDoubleMetric(Tuple tuple) {
+        return new SubredditDoubleMetric(
+                (String) tuple.get(0),
+                tuple.get(1) == null ? 0. : ((BigDecimal) tuple.get(1)).doubleValue());
+    }
+
+    private List<SubredditDoubleMetric> mapToSubredditDoubleMetric(List<Tuple> tupleList) {
+        return tupleList.stream().map(this::mapToSubredditDoubleMetric).collect(Collectors.toList());
     }
 }

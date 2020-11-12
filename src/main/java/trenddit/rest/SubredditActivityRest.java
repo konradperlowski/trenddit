@@ -4,7 +4,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import trenddit.bean.SubredditMetric;
+import trenddit.bean.SubredditDoubleMetric;
 import trenddit.service.SubredditRankingService;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class SubredditActivityRest {
     }
 
     @GetMapping(value = "/activity", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<SubredditMetric> getActivity() {
-        return subredditRankingService.getSubredditsActivity();
+    public List<SubredditDoubleMetric> getActivity() {
+        return subredditRankingService.getSubredditsActivity(31, 1);
     }
 }
