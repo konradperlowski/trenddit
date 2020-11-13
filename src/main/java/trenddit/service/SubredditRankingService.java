@@ -37,7 +37,7 @@ public class SubredditRankingService {
 
     public List<SubredditMetric> getAverageComments(Integer days) {
         return mapToSubredditMetric(subredditRankingRepository.findAverageComments(
-                DateUtil.daysAgo(1), DateUtil.daysAgo(days)), "comments");
+                DateUtil.daysAgo(1), DateUtil.daysAgo(days)));
     }
 
     public List<SubredditRanking> getTodayMostPosted() {
@@ -46,17 +46,17 @@ public class SubredditRankingService {
 
     public List<SubredditMetric> getAveragePosted(Integer days) {
         return mapToSubredditMetric(subredditRankingRepository.findAveragePosts(
-                DateUtil.daysAgo(1), DateUtil.daysAgo(days)), "posts");
+                DateUtil.daysAgo(1), DateUtil.daysAgo(days)));
     }
 
     public List<SubredditMetric> getSubredditsGrowth(Integer days, Integer limit) {
         return mapToSubredditMetric(subredditRankingRepository.findSubredditsGrowth(
-                DateUtil.daysAgo(0), DateUtil.daysAgo(days), days, limit == null ? 9999 : limit), "growth");
+                DateUtil.daysAgo(0), DateUtil.daysAgo(days), days, limit == null ? 9999 : limit));
     }
 
     public SubredditMetric getSubredditGrowth(String subreddit, Integer days) {
         return mapToSubredditMetric(subredditRankingRepository.findSubredditGrowth(
-                subreddit, DateUtil.daysAgo(0), DateUtil.daysAgo(days), days), "growth");
+                subreddit, DateUtil.daysAgo(0), DateUtil.daysAgo(days), days));
     }
 
     public SubredditRankedMetric getSubredditRankedList(String subredditName, String metric) {
@@ -95,7 +95,7 @@ public class SubredditRankingService {
 
     public List<SubredditDoubleMetric> getSubredditsActivityGrowth() {
         List<SubredditDoubleMetric> lastMonthActivity = getSubredditsActivity(31, 1);
-        List<SubredditDoubleMetric> yesterdayActivity = getSubredditsActivity(8, 8);
+        List<SubredditDoubleMetric> yesterdayActivity = getSubredditsActivity(1, 1);
 
         return yesterdayActivity.stream()
                 .map(s -> new SubredditDoubleMetric(s.getName(), s.getNumber() / lastMonthActivity.stream()
@@ -122,14 +122,14 @@ public class SubredditRankingService {
         }
     }
 
-    private SubredditMetric mapToSubredditMetric(Tuple tuple, String metricName) {
+    private SubredditMetric mapToSubredditMetric(Tuple tuple) {
         return new SubredditMetric(
-                (String) tuple.get("name"),
-                tuple.get(metricName) == null ? 0 : ((BigDecimal) tuple.get(metricName)).intValue());
+                (String) tuple.get(0),
+                tuple.get(1) == null ? 0 : ((BigDecimal) tuple.get(1)).intValue());
     }
 
-    private List<SubredditMetric> mapToSubredditMetric(List<Tuple> tupleList, String metricName) {
-        return tupleList.stream().map(tuple -> mapToSubredditMetric(tuple, metricName)).collect(Collectors.toList());
+    private List<SubredditMetric> mapToSubredditMetric(List<Tuple> tupleList) {
+        return tupleList.stream().map(this::mapToSubredditMetric).collect(Collectors.toList());
     }
 
     private SubredditDoubleMetric mapToSubredditDoubleMetric(Tuple tuple) {
