@@ -21,48 +21,6 @@
         drawTopSubredditChart()
     </script>
 
-    <div class="d-flex mb-5" style="width: 100%">
-        <div class="small-container ml-4">
-            <h2 class="mb-4" style="min-width: 600px">Top increase and decline in activity</h2>
-            <table class="table table-hover table-bordered table-striped" style="width: 100%;">
-                <thead>
-                <tr>
-                    <th class="w-200" scope="col">Subreddit</th>
-                    <th class="w-200" scope="col">Activity increase(%)</th>
-                    <th class="w-200" scope="col">Subreddit</th>
-                    <th class="w-200" scope="col">Activity decline(%)</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="subreddit, iter: ${firstActivity}">
-                    <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
-                           th:href="'/subreddit/' + ${subreddit.name}"></a></td>
-                    <td class="growth-number-up">
-                        <div class="d-flex float-right">
-                            <span class="mr-2" th:text="${subreddit.number}"></span>
-                            <i class="mr-1 fas fa-angle-up" data-fa-transform="down-4"></i>
-                        </div>
-                    </td>
-                    <td><a class="table-link" th:text="'r/' + ${lastActivity[__${iter.index}__].name}"
-                           th:href="'/subreddit/' + ${lastActivity[__${iter.index}__].name}"></a></td>
-                    <td class="growth-number-down">
-                        <div class="d-flex float-right">
-                            <span class="mr-2" th:text="${lastActivity[__${iter.index}__].number}"></span>
-                            <i class="mr-1 fas fa-angle-down" data-fa-transform="down-4"></i>
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-                <tfoot>
-                <tr>
-                    <td colspan="4" class="show-more-button"><a class="table-link" href="/top/activity">Show more</a>
-                    </td>
-                </tr>
-                </tfoot>
-            </table>
-        </div>
-    </div>
-
     <div class="d-flex mb-5">
         <div class="small-container mr-4">
             <h2 class="mb-4">Top commented today</h2>
@@ -113,6 +71,49 @@
             </table>
         </div>
     </div>
+
+    <div class="d-flex mb-5" style="width: 100%">
+        <div class="small-container ml-4">
+            <h2 class="mb-4" style="min-width: 600px">Top increase and decline in activity</h2>
+            <table class="table table-hover table-bordered table-striped" style="width: 100%;">
+                <thead>
+                <tr>
+                    <th class="w-200" scope="col">Subreddit</th>
+                    <th class="w-200" scope="col">Activity increase(%)</th>
+                    <th class="w-200" scope="col">Subreddit</th>
+                    <th class="w-200" scope="col">Activity decline(%)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="subreddit, iter: ${firstActivity}">
+                    <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
+                           th:href="'/subreddit/' + ${subreddit.name}"></a></td>
+                    <td class="growth-number-up">
+                        <div class="d-flex float-right">
+                            <span class="mr-2" th:text="${subreddit.number}"></span>
+                            <i class="mr-1 fas fa-angle-up" data-fa-transform="down-4"></i>
+                        </div>
+                    </td>
+                    <td><a class="table-link" th:text="'r/' + ${lastActivity[__${iter.index}__].name}"
+                           th:href="'/subreddit/' + ${lastActivity[__${iter.index}__].name}"></a></td>
+                    <td class="growth-number-down">
+                        <div class="d-flex float-right">
+                            <span class="mr-2" th:text="${lastActivity[__${iter.index}__].number}"></span>
+                            <i class="mr-1 fas fa-angle-down" data-fa-transform="down-4"></i>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="4" class="show-more-button"><a class="table-link" href="/top/activity">Show more</a>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
     <h2 class="mb-4">Fastest growing</h2>
     <div class="mb-5">
         <table class="table table-hover table-bordered table-striped">
