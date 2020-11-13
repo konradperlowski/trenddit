@@ -31,7 +31,13 @@
                     <td class="w-90" th:text="${iter.index} + 1"></td>
                     <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
                            th:href="'/subreddit/' + ${subreddit.name}"></a></td>
-                    <td class="text-right" th:text="${subreddit.number}"></td>
+                    <td th:class="${subreddit.number > 0 ? 'growth-number-up' : 'growth-number-down'}">
+                        <div class="d-flex float-right">
+                            <span class="mr-2" th:text="${subreddit.number}"></span>
+                            <i class="mr-1" data-fa-transform="down-4"
+                               th:classappend="${subreddit.number > 0 ? 'fas fa-angle-up' : 'fas fa-angle-down'}"></i>
+                        </div>
+                    </td>
                 </tr>
                 </tbody>
             </table>
