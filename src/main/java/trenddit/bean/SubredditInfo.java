@@ -19,6 +19,7 @@ public class SubredditInfo {
     private Integer growthTodayRank;
     private Integer growthWeek;
     private Integer growthMonth;
+    private Integer averageCommentsToPosts;
     private List<SubredditPost> bestSubmissions;
 
     public String getName() {
@@ -139,5 +140,13 @@ public class SubredditInfo {
 
     public void setBestSubmissions(List<SubredditPost> bestSubmissions) {
         this.bestSubmissions = bestSubmissions;
+    }
+
+    public Integer getAverageCommentsToPosts() {
+        return averageCommentsToPosts;
+    }
+
+    public void setAverageCommentsToPosts(Integer averageCommentsToPosts) {
+        this.averageCommentsToPosts = averageCommentsToPosts;
     }
 }

@@ -71,6 +71,9 @@
 
     <h5 class="mt-4 mb-4">Number of posts over last month</h5>
     <canvas id="growth-posts" class="growth-chart mb-5"></canvas>
+
+    <h5 class="mt-4 mb-4" th:text="'Comments to posts, average value: ' + ${subreddit.averageCommentsToPosts}"></h5>
+    <canvas id="comments-to-posts" class="growth-chart mb-5"></canvas>
     <script th:inline="javascript">
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();

@@ -87,7 +87,7 @@ public class SubredditRankingService {
 
     public List<SubredditDoubleMetric> getSubredditsActivity(Integer from, Integer to) {
         return mapToSubredditDoubleMetric(subredditRankingRepository.findSubredditsActivity(
-                DateUtil.daysAgo(from), DateUtil.daysAgo(to)));
+                DateUtil.ago(from), DateUtil.ago(to)));
     }
 
     public boolean isSubredditInDb(String subredditName) {
@@ -119,6 +119,11 @@ public class SubredditRankingService {
                 .collect(Collectors.toList());
     }
 
+    public SubredditDoubleMetric getSubredditAverageActivity(String subredditName) {
+        return mapToSubredditDoubleMetric(subredditRankingRepository.findSubredditAverageActivity(
+                subredditName, DateUtil.ago(31), DateUtil.ago(1)));
+    }
+
     private List<SubredditMetric> getMetricList(String metric, Integer days) {
         switch (metric) {
             case "growth":
@@ -147,7 +152,7 @@ public class SubredditRankingService {
     private SubredditDoubleMetric mapToSubredditDoubleMetric(Tuple tuple) {
         return new SubredditDoubleMetric(
                 (String) tuple.get(0),
-                tuple.get(1) == null ? 0. : ((BigDecimal) tuple.get(1)).doubleValue());
+                tuple.get(1) == null ? 0. : ((Double) tuple.get(1)));
     }
 
     private List<SubredditDoubleMetric> mapToSubredditDoubleMetric(List<Tuple> tupleList) {

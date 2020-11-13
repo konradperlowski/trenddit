@@ -38,6 +38,8 @@ public class RedditOperations {
         subredditInfo.setUrl(subreddit.getUrl());
         subredditInfo.setDescription(subreddit.getPublicDescription());
         subredditInfo.setCreatedAt(subreddit.getCreated());
+        subredditInfo.setAverageCommentsToPosts(
+                subredditRankingService.getSubredditAverageActivity(subreddit.getName()).getNumber().intValue());
 
         SubredditRankedMetric subscriberRank = subredditRankingService.getSubredditRankedList(subreddit.getName(), "subscribers");
         subredditInfo.setSubscribers(subscriberRank.getNumber());
