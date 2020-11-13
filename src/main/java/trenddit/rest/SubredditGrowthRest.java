@@ -37,7 +37,7 @@ public class SubredditGrowthRest {
     }
 
     @GetMapping(value = "activity", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<SubredditDoubleMetric> getSubredditsActivityGrowth() {
+    public List<SubredditMetric> getSubredditsActivityGrowth() {
         return subredditRankingService.getSubredditsActivityGrowth();
     }
 }

@@ -14,6 +14,7 @@ $(document).ready(function () {
     $('#postsTableDay').DataTable()
     $('#postsTableWeek').DataTable()
     $('#postsTableMonth').DataTable()
+    $('#activityTable').DataTable()
 
     content.show()
     loading.hide()

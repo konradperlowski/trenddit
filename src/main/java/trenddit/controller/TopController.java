@@ -48,8 +48,13 @@ public class TopController {
     }
 
     @GetMapping("/analysis")
-    public String topAnalyze(Model model) {
-
+    public String topAnalyze() {
         return "top/analysis";
+    }
+
+    @GetMapping("/activity")
+    public String topActivity(Model model) {
+        model.addAttribute("activityList", subredditRankingService.getSubredditsActivityGrowth());
+        return "top/activity";
     }
 }

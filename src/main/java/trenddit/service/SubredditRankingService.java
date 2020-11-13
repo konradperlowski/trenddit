@@ -93,16 +93,16 @@ public class SubredditRankingService {
         return subredditRankingRepository.existsById(new SubredditRankingPK(subredditName, DateUtil.ago(0)));
     }
 
-    public List<SubredditDoubleMetric> getSubredditsActivityGrowth() {
+    public List<SubredditMetric> getSubredditsActivityGrowth() {
         List<SubredditDoubleMetric> lastMonthActivity = getSubredditsActivity(31, 1);
         List<SubredditDoubleMetric> yesterdayActivity = getSubredditsActivity(1, 1);
 
         return yesterdayActivity.stream()
-                .map(s -> new SubredditDoubleMetric(s.getName(), s.getNumber() / lastMonthActivity.stream()
+                .map(s -> new SubredditMetric(s.getName(), (int) (s.getNumber() / lastMonthActivity.stream()
                         .filter(ss -> ss.getName().equals(s.getName()))
                         .findFirst()
-                        .orElse(new SubredditDoubleMetric(s.getName(), 1.)).getNumber()))
-                .sorted(Comparator.comparing(SubredditDoubleMetric::getNumber).reversed())
+                        .orElse(new SubredditDoubleMetric(s.getName(), 1.)).getNumber() * 100) - 100))
+                .sorted(Comparator.comparing(SubredditMetric::getNumber).reversed())
                 .filter(s -> !Double.isNaN(s.getNumber()))
                 .collect(Collectors.toList());
     }

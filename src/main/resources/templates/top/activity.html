@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header :: common-header"></head>
+<body>
+<nav th:replace="common/navbar :: common-navbar"></nav>
+<div class="container">
+    <div class="mb-5">
+        <h2 class="mt-4 mb-3">Activity growth</h2>
+        <span>Subreddits activity growth compared to last month</span>
+    </div>
+
+    <div id="loadingDiv">
+        <div class="d-flex justify-content-center m-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <div id="pageContent" style="display:none;">
+        <div class="mb-5">
+            <table id="activityTable" class="table table-hover table-bordered table-striped" style="width: 100%">
+                <thead>
+                <tr>
+                    <th class="w-90">Rank</th>
+                    <th>Subreddit</th>
+                    <th class="w-150">Activity growth(%)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="subreddit, iter: ${activityList}">
+                    <td class="w-90" th:text="${iter.index} + 1"></td>
+                    <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
+                           th:href="'/subreddit/' + ${subreddit.name}"></a></td>
+                    <td class="text-right" th:text="${subreddit.number}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
