@@ -11,6 +11,7 @@ import trenddit.util.DateUtil;
 
 import javax.persistence.Tuple;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -91,6 +92,17 @@ public class SubredditRankingService {
 
     public boolean isSubredditInDb(String subredditName) {
         return subredditRankingRepository.existsById(new SubredditRankingPK(subredditName, DateUtil.ago(0)));
+    }
+
+    public List<SubredditMetric> getFirst15SubredditsActivityGrowth() {
+        return getSubredditsActivityGrowth().stream().limit(10).collect(Collectors.toList());
+    }
+
+    public List<SubredditMetric> getLast15SubredditsActivityGrowth() {
+        List<SubredditMetric> toReturn = getSubredditsActivityGrowth();
+        Collections.reverse(toReturn);
+        return toReturn.stream().limit(15)
+                .map(s -> new SubredditMetric(s.getName(), -s.getNumber())).collect(Collectors.toList());
     }
 
     public List<SubredditMetric> getSubredditsActivityGrowth() {

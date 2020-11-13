@@ -16,6 +16,8 @@ public class HomeController {
 
     @GetMapping(value = "/")
     public String home(Model model) {
+        model.addAttribute("firstActivity", subredditRankingService.getFirst15SubredditsActivityGrowth());
+        model.addAttribute("lastActivity", subredditRankingService.getLast15SubredditsActivityGrowth());
         model.addAttribute("mostCommented", subredditRankingService.getTodayMostCommented());
         model.addAttribute("mostPosted", subredditRankingService.getTodayMostPosted());
         model.addAttribute("growthToday", subredditRankingService.getSubredditsGrowth(1, 15));

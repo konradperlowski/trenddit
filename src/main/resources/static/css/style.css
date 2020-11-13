@@ -34,8 +34,8 @@
     width: 99px;
 }
 
-.w-150 {
-    width: 150px;
+.w-200 {
+    min-width: 200px;
 }
 
 .growth-number-up {
