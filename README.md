@@ -1,6 +1,8 @@
 # Trenddit
 Application monitoring reddit's trends
 
+Preview: http://149.156.182.91:8080
+
 ## Requirements
 - java 8 or newer
 - mysql 8
