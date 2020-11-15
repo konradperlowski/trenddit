@@ -27,9 +27,13 @@ public class SubredditRankingService {
     }
 
     public List<SubredditMetric> getSubscriberRanking() {
-        return subredditRankingRepository.getByDateOrderBySubscribersDesc(new Date())
+        return getSubscriberRanking(true);
+    }
+
+    public List<SubredditMetric> getSubscriberRanking(boolean filterByTop1000) {
+        return filterByTop1000(subredditRankingRepository.getByDateOrderBySubscribersDesc(new Date())
                 .stream().map(subreddit -> new SubredditMetric(subreddit.getName(), subreddit.getSubscribers()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()), filterByTop1000);
     }
 
     public List<SubredditRanking> getTodayMostCommented() {
@@ -37,8 +41,12 @@ public class SubredditRankingService {
     }
 
     public List<SubredditMetric> getAverageComments(Integer days) {
-        return mapToSubredditMetric(subredditRankingRepository.findAverageComments(
-                DateUtil.daysAgo(1), DateUtil.daysAgo(days)));
+        return getAverageComments(days, true);
+    }
+
+    public List<SubredditMetric> getAverageComments(Integer days, boolean filterByTop1000) {
+        return filterByTop1000(mapToSubredditMetric(subredditRankingRepository.findAverageComments(
+                DateUtil.daysAgo(1), DateUtil.daysAgo(days))), filterByTop1000);
     }
 
     public List<SubredditRanking> getTodayMostPosted() {
@@ -46,13 +54,22 @@ public class SubredditRankingService {
     }
 
     public List<SubredditMetric> getAveragePosted(Integer days) {
-        return mapToSubredditMetric(subredditRankingRepository.findAveragePosts(
-                DateUtil.daysAgo(1), DateUtil.daysAgo(days)));
+        return getAveragePosted(days, true);
+    }
+
+    public List<SubredditMetric> getAveragePosted(Integer days, boolean filterByTop1000) {
+        return filterByTop1000(mapToSubredditMetric(subredditRankingRepository.findAveragePosts(
+                DateUtil.daysAgo(1), DateUtil.daysAgo(days))), filterByTop1000);
     }
 
     public List<SubredditMetric> getSubredditsGrowth(Integer days, Integer limit) {
-        return mapToSubredditMetric(subredditRankingRepository.findSubredditsGrowth(
-                DateUtil.daysAgo(0), DateUtil.daysAgo(days), days, limit == null ? 9999 : limit));
+        return getSubredditsGrowth(days, limit, true);
+    }
+
+    public List<SubredditMetric> getSubredditsGrowth(Integer days, Integer limit, boolean filterByTop1000) {
+        return filterByTop1000(mapToSubredditMetric(subredditRankingRepository.findSubredditsGrowth(
+                DateUtil.daysAgo(0), DateUtil.daysAgo(days), days, limit == null ? 9999 : limit)), filterByTop1000)
+                .stream().sorted((Comparator.comparing(SubredditMetric::getNumber)).reversed()).collect(Collectors.toList());
     }
 
     public SubredditMetric getSubredditGrowth(String subreddit, Integer days) {
@@ -85,11 +102,6 @@ public class SubredditRankingService {
                 .collect(Collectors.toList());
     }
 
-    public List<SubredditDoubleMetric> getSubredditsActivity(Integer from, Integer to) {
-        return mapToSubredditDoubleMetric(subredditRankingRepository.findSubredditsActivity(
-                DateUtil.ago(from), DateUtil.ago(to)));
-    }
-
     public boolean isSubredditInDb(String subredditName) {
         return subredditRankingRepository.existsById(new SubredditRankingPK(subredditName, DateUtil.ago(0)));
     }
@@ -109,14 +121,14 @@ public class SubredditRankingService {
         List<SubredditDoubleMetric> lastMonthActivity = getSubredditsActivity(31, 1);
         List<SubredditDoubleMetric> yesterdayActivity = getSubredditsActivity(1, 1);
 
-        return yesterdayActivity.stream()
+        return filterByTop1000(yesterdayActivity.stream()
                 .map(s -> new SubredditMetric(s.getName(), (int) (s.getNumber() / lastMonthActivity.stream()
                         .filter(ss -> ss.getName().equals(s.getName()))
                         .findFirst()
                         .orElse(new SubredditDoubleMetric(s.getName(), 1.)).getNumber() * 100) - 100))
                 .sorted(Comparator.comparing(SubredditMetric::getNumber).reversed())
                 .filter(s -> !Double.isNaN(s.getNumber()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()), true);
     }
 
     public SubredditDoubleMetric getSubredditAverageActivity(String subredditName) {
@@ -124,16 +136,21 @@ public class SubredditRankingService {
                 subredditName, DateUtil.ago(31), DateUtil.ago(1)));
     }
 
+    private List<SubredditDoubleMetric> getSubredditsActivity(Integer from, Integer to) {
+        return mapToSubredditDoubleMetric(subredditRankingRepository.findSubredditsActivity(
+                DateUtil.ago(from), DateUtil.ago(to)));
+    }
+
     private List<SubredditMetric> getMetricList(String metric, Integer days) {
         switch (metric) {
             case "growth":
-                return getSubredditsGrowth(days, 9999);
+                return getSubredditsGrowth(days, 9999, false);
             case "comments":
-                return getAverageComments(days);
+                return getAverageComments(days, false);
             case "posts":
-                return getAveragePosted(days);
+                return getAveragePosted(days, false);
             case "subscribers":
-                return getSubscriberRanking();
+                return getSubscriberRanking(false);
             default:
                 return null;
         }
@@ -157,5 +174,11 @@ public class SubredditRankingService {
 
     private List<SubredditDoubleMetric> mapToSubredditDoubleMetric(List<Tuple> tupleList) {
         return tupleList.stream().map(this::mapToSubredditDoubleMetric).collect(Collectors.toList());
+    }
+
+    private List<SubredditMetric> filterByTop1000(List<SubredditMetric> list, boolean filter) {
+        List<String> top1000 = subredditRankingRepository.findTop1000ByDateOrderByCommentsDesc(DateUtil.ago(1)).stream()
+                .map(SubredditRanking::getName).collect(Collectors.toList());
+        return list.stream().filter(s -> !filter || top1000.contains(s.getName())).collect(Collectors.toList());
     }
 }

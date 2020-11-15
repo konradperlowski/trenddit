@@ -72,4 +72,6 @@ public interface SubredditRankingRepository extends CrudRepository<SubredditRank
             @Param("from") Date from,
             @Param("to") Date to
     );
+
+    List<SubredditRanking> findTop1000ByDateOrderByCommentsDesc(Date date);
 }
