@@ -22,7 +22,7 @@ async function drawGrowthChart(subreddit) {
     drawChart('growth-comments', dates, comments, 'Comments')
     drawChart('growth-posts', dates, posts, 'Posts')
     drawChart('comments-to-posts', dates,
-        comments.map((c, i) => Number(posts[i] !== 0 ? c / posts[i] : 0).toFixed(2)), 'Comment / Posts')
+        comments.map((c, i) => Number(posts[i] !== 0 ? c / posts[i] : c).toFixed(2)), 'Comment / Posts')
 }
 
 function drawChart(canvasId, dates, values, label) {

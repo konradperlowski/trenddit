@@ -118,8 +118,8 @@ public class SubredditRankingService {
     }
 
     public List<SubredditMetric> getSubredditsActivityGrowth() {
-        List<SubredditDoubleMetric> lastMonthActivity = getSubredditsActivity(31, 1);
-        List<SubredditDoubleMetric> yesterdayActivity = getSubredditsActivity(1, 1);
+        List<SubredditDoubleMetric> lastMonthActivity = getSubredditsActivity(7);
+        List<SubredditDoubleMetric> yesterdayActivity = getSubredditsActivity(1);
 
         return filterByTop1000(yesterdayActivity.stream()
                 .map(s -> new SubredditMetric(s.getName(), (int) (s.getNumber() / lastMonthActivity.stream()
@@ -133,12 +133,12 @@ public class SubredditRankingService {
 
     public SubredditDoubleMetric getSubredditAverageActivity(String subredditName) {
         return mapToSubredditDoubleMetric(subredditRankingRepository.findSubredditAverageActivity(
-                subredditName, DateUtil.ago(31), DateUtil.ago(1)));
+                subredditName, DateUtil.daysAgo(31), DateUtil.daysAgo(1)));
     }
 
-    private List<SubredditDoubleMetric> getSubredditsActivity(Integer from, Integer to) {
+    private List<SubredditDoubleMetric> getSubredditsActivity(Integer from) {
         return mapToSubredditDoubleMetric(subredditRankingRepository.findSubredditsActivity(
-                DateUtil.ago(from), DateUtil.ago(to)));
+                DateUtil.daysAgo(from), DateUtil.daysAgo(1)));
     }
 
     private List<SubredditMetric> getMetricList(String metric, Integer days) {
@@ -169,7 +169,7 @@ public class SubredditRankingService {
     private SubredditDoubleMetric mapToSubredditDoubleMetric(Tuple tuple) {
         return new SubredditDoubleMetric(
                 (String) tuple.get(0),
-                tuple.get(1) == null ? 0. : ((Double) tuple.get(1)));
+                tuple.get(1) == null ? 0. : ((BigDecimal) tuple.get(1)).doubleValue());
     }
 
     private List<SubredditDoubleMetric> mapToSubredditDoubleMetric(List<Tuple> tupleList) {
