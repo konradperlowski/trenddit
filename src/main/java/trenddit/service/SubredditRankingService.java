@@ -118,7 +118,7 @@ public class SubredditRankingService {
     }
 
     public List<SubredditMetric> getSubredditsActivityGrowth() {
-        List<SubredditDoubleMetric> lastMonthActivity = getSubredditsActivity(7);
+        List<SubredditDoubleMetric> lastMonthActivity = getSubredditsActivity(31);
         List<SubredditDoubleMetric> yesterdayActivity = getSubredditsActivity(1);
 
         return filterByTop1000(yesterdayActivity.stream()

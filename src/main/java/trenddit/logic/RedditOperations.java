@@ -63,7 +63,7 @@ public class RedditOperations {
         DefaultPaginator<Submission> paginator = redditClient.subreddit(subreddit.getName()).posts()
                 .limit(5)
                 .sorting(SubredditSort.TOP)
-                .timePeriod(TimePeriod.ALL)
+                .timePeriod(TimePeriod.WEEK)
                 .build();
 
         subredditInfo.setBestSubmissions(convertToSubredditPost(paginator.next()));
