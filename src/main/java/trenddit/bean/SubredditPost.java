@@ -6,7 +6,7 @@ public class SubredditPost {
     private String upVotes;
 
     public SubredditPost(String title, String url, Integer upVotes) {
-        this.title = title.replaceAll("(?<=.{44})\\b.*", "...");
+        this.title = title.replaceAll("(?<=.{42})\\b.*", "..");
         this.url = "https://www.reddit.com" + url;
         this.upVotes = withSuffix(upVotes);
     }

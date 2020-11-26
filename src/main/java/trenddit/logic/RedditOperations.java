@@ -61,9 +61,7 @@ public class RedditOperations {
         subredditInfo.setGrowthMonth(subredditRankingService.getSubredditGrowth(subreddit.getName(), 30).getNumber());
 
         DefaultPaginator<Submission> paginator = redditClient.subreddit(subreddit.getName()).posts()
-                .limit(5)
-                .sorting(SubredditSort.TOP)
-                .timePeriod(TimePeriod.WEEK)
+                .sorting(SubredditSort.HOT)
                 .build();
 
         subredditInfo.setBestSubmissions(convertToSubredditPost(paginator.next()));
@@ -73,6 +71,7 @@ public class RedditOperations {
     private List<SubredditPost> convertToSubredditPost(Listing<Submission> submissionListing) {
         return submissionListing.stream()
                 .map(s -> new SubredditPost(s.getTitle(), s.getPermalink(), s.getScore()))
+                .limit(5)
                 .collect(Collectors.toList());
     }
 }
