@@ -1,21 +1,14 @@
-async function drawGrowthChart(subreddit) {
+async function drawGrowthChart(subredditMetricGrowth) {
     let dates = []
     let subscribers = []
     let comments = []
     let posts = []
 
-
-    await $.ajax({
-        url: '/api/growth/metric/' + subreddit + '?limit=31',
-        method: 'get',
-        dataType: 'json'
-    }).done(response => {
-        response.forEach(subreddit => {
-            dates.push(subreddit.date)
-            subscribers.push(subreddit.subscribers)
-            comments.push(subreddit.comments)
-            posts.push(subreddit.posts)
-        })
+    subredditMetricGrowth.forEach(subreddit => {
+        dates.push(subreddit.date)
+        subscribers.push(subreddit.subscribers)
+        comments.push(subreddit.comments)
+        posts.push(subreddit.posts)
     })
 
     drawChart('growth-subscribers', dates, subscribers, 'Subscribers')
@@ -33,7 +26,7 @@ function drawChart(canvasId, dates, values, label) {
             datasets: [{
                 label: label,
                 data: values,
-                backgroundColor: 'rgba(0, 123, 255, 0)',
+                backgroundColor: 'rgba(0, 0, 0, 0)',
                 borderColor: 'rgba(0, 123, 255, 1)',
                 borderWidth: 3
             }]
