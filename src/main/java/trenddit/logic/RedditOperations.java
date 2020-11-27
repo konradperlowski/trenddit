@@ -41,7 +41,7 @@ public class RedditOperations {
         subredditInfo.setAverageCommentsToPosts(
                 subredditRankingService.getSubredditAverageActivity(subreddit.getName()).getNumber().intValue());
 
-        SubredditRankedMetric subscriberRank = subredditRankingService.getSubredditRankedList(subreddit.getName(), "subscribers");
+        SubredditRankedMetric subscriberRank = subredditRankingService.getSubredditRankedList(subreddit.getName(), "subscribers", 1);
         subredditInfo.setSubscribers(subscriberRank.getNumber());
         subredditInfo.setSubscriberRank(subscriberRank.getRank());
 
@@ -53,7 +53,7 @@ public class RedditOperations {
         subredditInfo.setPostsPerDay(postsRank.getNumber());
         subredditInfo.setPostsPerDayRank(postsRank.getRank());
 
-        SubredditRankedMetric growthRank = subredditRankingService.getSubredditRankedList(subreddit.getName(), "growth");
+        SubredditRankedMetric growthRank = subredditRankingService.getSubredditRankedList(subreddit.getName(), "growth", 1);
         subredditInfo.setGrowthToday(growthRank.getNumber());
         subredditInfo.setGrowthTodayRank(growthRank.getRank());
 

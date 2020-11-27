@@ -20,9 +20,9 @@ public class HomeController {
         model.addAttribute("lastActivity", subredditRankingService.getLast15SubredditsActivityGrowth());
         model.addAttribute("mostCommented", subredditRankingService.getTodayMostCommented());
         model.addAttribute("mostPosted", subredditRankingService.getTodayMostPosted());
-        model.addAttribute("growthToday", subredditRankingService.getSubredditsGrowth(1, 15));
-        model.addAttribute("growthWeek", subredditRankingService.getSubredditsGrowth(7, 15));
-        model.addAttribute("growthMonth", subredditRankingService.getSubredditsGrowth(30, 15));
+        model.addAttribute("growthToday", subredditRankingService.getSubredditsGrowth(1, 15, true));
+        model.addAttribute("growthWeek", subredditRankingService.getSubredditsGrowth(7, 15, true));
+        model.addAttribute("growthMonth", subredditRankingService.getSubredditsGrowth(30, 15, true));
         return "home";
     }
 }

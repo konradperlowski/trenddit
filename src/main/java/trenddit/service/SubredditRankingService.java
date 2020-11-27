@@ -26,10 +26,6 @@ public class SubredditRankingService {
         this.subredditRankingRepository = subredditRankingRepository;
     }
 
-    public List<SubredditMetric> getSubscriberRanking() {
-        return getSubscriberRanking(true);
-    }
-
     public List<SubredditMetric> getSubscriberRanking(boolean filterByTop1000) {
         return filterByTop1000(subredditRankingRepository.getByDateOrderBySubscribersDesc(new Date())
                 .stream().map(subreddit -> new SubredditMetric(subreddit.getName(), subreddit.getSubscribers()))
@@ -38,10 +34,6 @@ public class SubredditRankingService {
 
     public List<SubredditRanking> getTodayMostCommented() {
         return subredditRankingRepository.findTop10ByDateOrderByCommentsDesc(DateUtil.ago(1));
-    }
-
-    public List<SubredditMetric> getAverageComments(Integer days) {
-        return getAverageComments(days, true);
     }
 
     public List<SubredditMetric> getAverageComments(Integer days, boolean filterByTop1000) {
@@ -53,17 +45,9 @@ public class SubredditRankingService {
         return subredditRankingRepository.findTop10ByDateOrderByPostsDesc(DateUtil.ago(1));
     }
 
-    public List<SubredditMetric> getAveragePosted(Integer days) {
-        return getAveragePosted(days, true);
-    }
-
     public List<SubredditMetric> getAveragePosted(Integer days, boolean filterByTop1000) {
         return filterByTop1000(mapToSubredditMetric(subredditRankingRepository.findAveragePosts(
                 DateUtil.daysAgo(1), DateUtil.daysAgo(days))), filterByTop1000);
-    }
-
-    public List<SubredditMetric> getSubredditsGrowth(Integer days, Integer limit) {
-        return getSubredditsGrowth(days, limit, true);
     }
 
     public List<SubredditMetric> getSubredditsGrowth(Integer days, Integer limit, boolean filterByTop1000) {
@@ -75,10 +59,6 @@ public class SubredditRankingService {
     public SubredditMetric getSubredditGrowth(String subreddit, Integer days) {
         return mapToSubredditMetric(subredditRankingRepository.findSubredditGrowth(
                 subreddit, DateUtil.daysAgo(0), DateUtil.daysAgo(days), days));
-    }
-
-    public SubredditRankedMetric getSubredditRankedList(String subredditName, String metric) {
-        return getSubredditRankedList(subredditName, metric, 1);
     }
 
     public SubredditRankedMetric getSubredditRankedList(String subredditName, String metric, Integer days) {

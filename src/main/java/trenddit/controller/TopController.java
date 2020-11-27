@@ -19,31 +19,31 @@ public class TopController {
 
     @GetMapping(value = "/growing")
     public String topGrowing(Model model) {
-        model.addAttribute("growthToday", subredditRankingService.getSubredditsGrowth(1, 9999));
-        model.addAttribute("growthWeek", subredditRankingService.getSubredditsGrowth(7, 9999));
-        model.addAttribute("growthMonth", subredditRankingService.getSubredditsGrowth(30, 9999));
+        model.addAttribute("growthToday", subredditRankingService.getSubredditsGrowth(1, 9999, true));
+        model.addAttribute("growthWeek", subredditRankingService.getSubredditsGrowth(7, 9999, true));
+        model.addAttribute("growthMonth", subredditRankingService.getSubredditsGrowth(30, 9999, true));
         return "top/growing";
     }
 
     @GetMapping("/comments")
     public String topComments(Model model) {
-        model.addAttribute("commentsToday", subredditRankingService.getAverageComments(1));
-        model.addAttribute("commentsWeek", subredditRankingService.getAverageComments(7));
-        model.addAttribute("commentsMonth", subredditRankingService.getAverageComments(30));
+        model.addAttribute("commentsToday", subredditRankingService.getAverageComments(1, true));
+        model.addAttribute("commentsWeek", subredditRankingService.getAverageComments(7, true));
+        model.addAttribute("commentsMonth", subredditRankingService.getAverageComments(30, true));
         return "top/comments";
     }
 
     @GetMapping("/posts")
     public String topPosts(Model model) {
-        model.addAttribute("postsToday", subredditRankingService.getAveragePosted(1));
-        model.addAttribute("postsWeek", subredditRankingService.getAveragePosted(7));
-        model.addAttribute("postsMonth", subredditRankingService.getAveragePosted(30));
+        model.addAttribute("postsToday", subredditRankingService.getAveragePosted(1, true));
+        model.addAttribute("postsWeek", subredditRankingService.getAveragePosted(7, true));
+        model.addAttribute("postsMonth", subredditRankingService.getAveragePosted(30, true));
         return "top/posts";
     }
 
     @GetMapping("/subreddits")
     public String topSubreddits(Model model) {
-        model.addAttribute("subscribersList", subredditRankingService.getSubscriberRanking());
+        model.addAttribute("subscribersList", subredditRankingService.getSubscriberRanking(true));
         return "top/subreddits";
     }
 
