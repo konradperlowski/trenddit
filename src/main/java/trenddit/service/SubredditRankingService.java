@@ -1,6 +1,7 @@
 package trenddit.service;
 
 import org.springframework.stereotype.Service;
+import trenddit.bean.Metric;
 import trenddit.bean.SubredditDoubleMetric;
 import trenddit.bean.SubredditMetric;
 import trenddit.bean.SubredditRankedMetric;
@@ -11,7 +12,6 @@ import trenddit.util.DateUtil;
 
 import javax.persistence.Tuple;
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -26,43 +26,13 @@ public class SubredditRankingService {
         this.subredditRankingRepository = subredditRankingRepository;
     }
 
-    public List<SubredditMetric> getSubscriberRanking(boolean filterByTop1000) {
-        return filterByTop1000(subredditRankingRepository.getByDateOrderBySubscribersDesc(new Date())
-                .stream().map(subreddit -> new SubredditMetric(subreddit.getName(), subreddit.getSubscribers()))
-                .collect(Collectors.toList()), filterByTop1000);
-    }
-
-    public List<SubredditRanking> getTodayMostCommented() {
-        return subredditRankingRepository.findTop10ByDateOrderByCommentsDesc(DateUtil.ago(1));
-    }
-
-    public List<SubredditMetric> getAverageComments(Integer days, boolean filterByTop1000) {
-        return filterByTop1000(mapToSubredditMetric(subredditRankingRepository.findAverageComments(
-                DateUtil.daysAgo(1), DateUtil.daysAgo(days))), filterByTop1000);
-    }
-
-    public List<SubredditRanking> getTodayMostPosted() {
-        return subredditRankingRepository.findTop10ByDateOrderByPostsDesc(DateUtil.ago(1));
-    }
-
-    public List<SubredditMetric> getAveragePosted(Integer days, boolean filterByTop1000) {
-        return filterByTop1000(mapToSubredditMetric(subredditRankingRepository.findAveragePosts(
-                DateUtil.daysAgo(1), DateUtil.daysAgo(days))), filterByTop1000);
-    }
-
-    public List<SubredditMetric> getSubredditsGrowth(Integer days, Integer limit, boolean filterByTop1000) {
-        return filterByTop1000(mapToSubredditMetric(subredditRankingRepository.findSubredditsGrowth(
-                DateUtil.daysAgo(0), DateUtil.daysAgo(days), days, limit == null ? 9999 : limit)), filterByTop1000)
-                .stream().sorted((Comparator.comparing(SubredditMetric::getNumber)).reversed()).collect(Collectors.toList());
-    }
-
-    public SubredditMetric getSubredditGrowth(String subreddit, Integer days) {
+    public SubredditMetric getSubredditGrowth(String subredditName, Integer days) {
         return mapToSubredditMetric(subredditRankingRepository.findSubredditGrowth(
-                subreddit, DateUtil.daysAgo(0), DateUtil.daysAgo(days), days));
+                subredditName, DateUtil.daysAgo(0), DateUtil.daysAgo(days), days));
     }
 
-    public SubredditRankedMetric getSubredditRankedList(String subredditName, String metric, Integer days) {
-        List<SubredditMetric> subredditsGrowth = getMetricList(metric, days);
+    public SubredditRankedMetric getMetricRankedList(String subredditName, Metric metric, Integer days) {
+        List<SubredditMetric> subredditsGrowth = getMetricList(metric, days, 0, false);
         if (subredditsGrowth == null) return null;
         final int[] i = {1};
         List<SubredditRankedMetric> subredditsGrowthRanked = subredditsGrowth.stream()
@@ -76,7 +46,6 @@ public class SubredditRankingService {
     }
 
     public List<SubredditRanking> getSubredditMetricGrowthOverTime(String subredditName, Integer limit) {
-        if (limit == null) return subredditRankingRepository.findAllByNameOrderByDateDesc(subredditName);
         return subredditRankingRepository.findAllByNameOrderByDateDesc(subredditName)
                 .stream().limit(limit).sorted(Comparator.comparing(SubredditRanking::getDate))
                 .collect(Collectors.toList());
@@ -84,17 +53,6 @@ public class SubredditRankingService {
 
     public boolean isSubredditInDb(String subredditName) {
         return subredditRankingRepository.existsById(new SubredditRankingPK(subredditName, DateUtil.ago(0)));
-    }
-
-    public List<SubredditMetric> getFirst15SubredditsActivityGrowth() {
-        return getSubredditsActivityGrowth().stream().limit(10).collect(Collectors.toList());
-    }
-
-    public List<SubredditMetric> getLast15SubredditsActivityGrowth() {
-        List<SubredditMetric> toReturn = getSubredditsActivityGrowth();
-        Collections.reverse(toReturn);
-        return toReturn.stream().limit(15)
-                .map(s -> new SubredditMetric(s.getName(), -s.getNumber())).collect(Collectors.toList());
     }
 
     public List<SubredditMetric> getSubredditsActivityGrowth() {
@@ -116,24 +74,32 @@ public class SubredditRankingService {
                 subredditName, DateUtil.daysAgo(31), DateUtil.daysAgo(1)));
     }
 
-    private List<SubredditDoubleMetric> getSubredditsActivity(Integer from) {
-        return mapToSubredditDoubleMetric(subredditRankingRepository.findSubredditsActivity(
-                DateUtil.daysAgo(from), DateUtil.daysAgo(1)));
-    }
-
-    private List<SubredditMetric> getMetricList(String metric, Integer days) {
+    public List<SubredditMetric> getMetricList(Metric metric, Integer days, Integer limit, boolean filterByTop1000) {
+        limit = limit == 0 ? 9999 : limit;
         switch (metric) {
-            case "growth":
-                return getSubredditsGrowth(days, 9999, false);
-            case "comments":
-                return getAverageComments(days, false);
-            case "posts":
-                return getAveragePosted(days, false);
-            case "subscribers":
-                return getSubscriberRanking(false);
+            case GROWTH:
+                return filterByTop1000(mapToSubredditMetric(subredditRankingRepository.findSubredditsGrowth(
+                        DateUtil.daysAgo(0), DateUtil.daysAgo(days), days, limit)), filterByTop1000)
+                        .stream().sorted((Comparator.comparing(SubredditMetric::getNumber)).reversed())
+                        .collect(Collectors.toList());
+            case COMMENT:
+                return filterByTop1000(mapToSubredditMetric(subredditRankingRepository.findAverageComments(
+                        DateUtil.daysAgo(1), DateUtil.daysAgo(days), limit)), filterByTop1000);
+            case POST:
+                return filterByTop1000(mapToSubredditMetric(subredditRankingRepository.findAveragePosts(
+                        DateUtil.daysAgo(1), DateUtil.daysAgo(days), limit)), filterByTop1000);
+            case SUBSCRIBER:
+                return filterByTop1000(subredditRankingRepository.getByDateOrderBySubscribersDesc(new Date())
+                        .stream().map(subreddit -> new SubredditMetric(subreddit.getName(), subreddit.getSubscribers()))
+                        .collect(Collectors.toList()), filterByTop1000);
             default:
                 return null;
         }
+    }
+
+    private List<SubredditDoubleMetric> getSubredditsActivity(Integer from) {
+        return mapToSubredditDoubleMetric(subredditRankingRepository.findSubredditsActivity(
+                DateUtil.daysAgo(from), DateUtil.daysAgo(1)));
     }
 
     private SubredditMetric mapToSubredditMetric(Tuple tuple) {

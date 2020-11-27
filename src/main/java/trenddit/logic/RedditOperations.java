@@ -4,6 +4,7 @@ import net.dean.jraw.RedditClient;
 import net.dean.jraw.models.*;
 import net.dean.jraw.pagination.DefaultPaginator;
 import org.springframework.stereotype.Component;
+import trenddit.bean.Metric;
 import trenddit.bean.SubredditInfo;
 import trenddit.bean.SubredditPost;
 import trenddit.bean.SubredditRankedMetric;
@@ -41,19 +42,19 @@ public class RedditOperations {
         subredditInfo.setAverageCommentsToPosts(
                 subredditRankingService.getSubredditAverageActivity(subreddit.getName()).getNumber().intValue());
 
-        SubredditRankedMetric subscriberRank = subredditRankingService.getSubredditRankedList(subreddit.getName(), "subscribers", 1);
+        SubredditRankedMetric subscriberRank = subredditRankingService.getMetricRankedList(subreddit.getName(), Metric.SUBSCRIBER, 1);
         subredditInfo.setSubscribers(subscriberRank.getNumber());
         subredditInfo.setSubscriberRank(subscriberRank.getRank());
 
-        SubredditRankedMetric commentsRank = subredditRankingService.getSubredditRankedList(subreddit.getName(), "comments", 30);
+        SubredditRankedMetric commentsRank = subredditRankingService.getMetricRankedList(subreddit.getName(), Metric.COMMENT, 30);
         subredditInfo.setCommentsPerDay(commentsRank.getNumber());
         subredditInfo.setCommentsPerDayRank(commentsRank.getRank());
 
-        SubredditRankedMetric postsRank = subredditRankingService.getSubredditRankedList(subreddit.getName(), "posts", 30);
+        SubredditRankedMetric postsRank = subredditRankingService.getMetricRankedList(subreddit.getName(), Metric.POST, 30);
         subredditInfo.setPostsPerDay(postsRank.getNumber());
         subredditInfo.setPostsPerDayRank(postsRank.getRank());
 
-        SubredditRankedMetric growthRank = subredditRankingService.getSubredditRankedList(subreddit.getName(), "growth", 1);
+        SubredditRankedMetric growthRank = subredditRankingService.getMetricRankedList(subreddit.getName(), Metric.GROWTH, 1);
         subredditInfo.setGrowthToday(growthRank.getNumber());
         subredditInfo.setGrowthTodayRank(growthRank.getRank());
 

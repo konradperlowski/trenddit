@@ -35,7 +35,7 @@
                 <tr th:each="subreddit: ${mostCommented}">
                     <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
                            th:href="'/subreddit/' + ${subreddit.name}"></a></td>
-                    <td class="text-right" th:text="${subreddit.comments}"></td>
+                    <td class="text-right" th:text="${subreddit.number}"></td>
                 </tr>
                 </tbody>
                 <tfoot>
@@ -60,7 +60,7 @@
                 <tr th:each="subreddit: ${mostPosted}">
                     <td><a class="table-link" th:text="'r/' + ${subreddit.name}"
                            th:href="'/subreddit/' + ${subreddit.name}"></a></td>
-                    <td class="text-right" th:text="${subreddit.posts}"></td>
+                    <td class="text-right" th:text="${subreddit.number}"></td>
                 </tr>
                 </tbody>
                 <tfoot>
