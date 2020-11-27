@@ -56,8 +56,10 @@ public class SubredditRankingService {
     }
 
     public List<SubredditMetric> getSubredditsActivityGrowth() {
-        List<SubredditDoubleMetric> lastMonthActivity = getSubredditsActivity(31);
-        List<SubredditDoubleMetric> yesterdayActivity = getSubredditsActivity(1);
+        List<SubredditDoubleMetric> lastMonthActivity = mapToSubredditDoubleMetric(
+                subredditRankingRepository.findSubredditsActivity(DateUtil.daysAgo(31), DateUtil.daysAgo(1)));
+        List<SubredditDoubleMetric> yesterdayActivity = mapToSubredditDoubleMetric(
+                subredditRankingRepository.findSubredditsActivity(DateUtil.daysAgo(1), DateUtil.daysAgo(1)));
 
         return filterByTop1000(yesterdayActivity.stream()
                 .map(s -> new SubredditMetric(s.getName(), (int) (s.getNumber() / lastMonthActivity.stream()
@@ -95,11 +97,6 @@ public class SubredditRankingService {
             default:
                 return null;
         }
-    }
-
-    private List<SubredditDoubleMetric> getSubredditsActivity(Integer from) {
-        return mapToSubredditDoubleMetric(subredditRankingRepository.findSubredditsActivity(
-                DateUtil.daysAgo(from), DateUtil.daysAgo(1)));
     }
 
     private SubredditMetric mapToSubredditMetric(Tuple tuple) {
