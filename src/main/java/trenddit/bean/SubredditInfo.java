@@ -1,5 +1,7 @@
 package trenddit.bean;
 
+import trenddit.entity.SubredditRanking;
+
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +23,7 @@ public class SubredditInfo {
     private Integer growthMonth;
     private Integer averageCommentsToPosts;
     private List<SubredditPost> bestSubmissions;
+    private List<SubredditRanking> subredditMetricGrowth;
 
     public String getName() {
         return name;
@@ -148,5 +151,13 @@ public class SubredditInfo {
 
     public void setAverageCommentsToPosts(Integer averageCommentsToPosts) {
         this.averageCommentsToPosts = averageCommentsToPosts;
+    }
+
+    public List<SubredditRanking> getSubredditMetricGrowth() {
+        return subredditMetricGrowth;
+    }
+
+    public void setSubredditMetricGrowth(List<SubredditRanking> subredditMetricGrowth) {
+        this.subredditMetricGrowth = subredditMetricGrowth;
     }
 }

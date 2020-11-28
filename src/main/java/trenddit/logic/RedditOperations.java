@@ -9,6 +9,7 @@ import trenddit.bean.SubredditInfo;
 import trenddit.bean.SubredditPost;
 import trenddit.bean.SubredditRankedMetric;
 import trenddit.service.SubredditRankingService;
+import trenddit.util.DateUtil;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,6 +61,12 @@ public class RedditOperations {
 
         subredditInfo.setGrowthWeek(subredditRankingService.getSubredditGrowth(subreddit.getName(), 7).getNumber());
         subredditInfo.setGrowthMonth(subredditRankingService.getSubredditGrowth(subreddit.getName(), 30).getNumber());
+
+        subredditInfo.setSubredditMetricGrowth(
+                subredditRankingService.getSubredditMetricGrowthOverTime(subreddit.getName(), 31).stream()
+                        .filter(subredditRanking ->
+                                !DateUtil.dateToString(subredditRanking.getDate()).equals(DateUtil.daysAgo(0)))
+                        .collect(Collectors.toList()));
 
         DefaultPaginator<Submission> paginator = redditClient.subreddit(subreddit.getName()).posts()
                 .sorting(SubredditSort.HOT)
