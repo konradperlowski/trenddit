@@ -88,17 +88,17 @@ public class SubredditRankingService {
         switch (metric) {
             case GROWTH:
                 toReturn = mapToSubredditMetric(subredditRankingRepository.findSubredditsGrowth(
-                        DateUtil.daysAgo(0), DateUtil.daysAgo(fromDays), fromDays, limit)).stream()
+                        DateUtil.daysAgo(0), DateUtil.daysAgo(fromDays), fromDays)).stream()
                         .sorted((Comparator.comparing(SubredditMetric::getNumber)).reversed())
                         .collect(Collectors.toList());
                 break;
             case COMMENT:
                 toReturn = mapToSubredditMetric(subredditRankingRepository.findAverageComments(
-                        DateUtil.daysAgo(1), DateUtil.daysAgo(fromDays), limit));
+                        DateUtil.daysAgo(1), DateUtil.daysAgo(fromDays)));
                 break;
             case POST:
                 toReturn = mapToSubredditMetric(subredditRankingRepository.findAveragePosts(
-                        DateUtil.daysAgo(1), DateUtil.daysAgo(fromDays), limit));
+                        DateUtil.daysAgo(1), DateUtil.daysAgo(fromDays)));
                 break;
             case SUBSCRIBER:
                 toReturn = subredditRankingRepository.getByDateOrderBySubscribersDesc(new Date()).stream()
@@ -109,7 +109,8 @@ public class SubredditRankingService {
                 throw new IllegalStateException("Unexpected value: " + metric);
         }
         return toReturn.stream()
-                .filter(s -> !filterByTop1000 || top1000.contains(s.getName())).collect(Collectors.toList());
+                .filter(s -> !filterByTop1000 || top1000.contains(s.getName()))
+                .limit(limit).collect(Collectors.toList());
     }
 
     private SubredditMetric mapToSubredditMetric(Tuple tuple) {
