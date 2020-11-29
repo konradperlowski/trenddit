@@ -49,7 +49,7 @@ public class RedditOperations {
         subredditInfo.setGrowthMonth(subredditRankingService.getSubredditGrowth(subreddit.getName(), 30).getNumber());
 
         subredditInfo.setSubredditMetricGrowth(
-                subredditRankingService.getSubredditMetricGrowthOverTime(subreddit.getName()).stream()
+                subredditRankingService.getSubredditMetricGrowthOverLastMonth(subreddit.getName()).stream()
                         .filter(subredditRanking ->
                                 !DateUtil.dateToString(subredditRanking.getDate()).equals(DateUtil.daysAgo(0)))
                         .collect(Collectors.toList()));

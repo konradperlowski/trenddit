@@ -49,7 +49,7 @@ public interface SubredditRankingRepository extends CrudRepository<SubredditRank
             @Param("today") String today,
             @Param("date_from") String from);
 
-    List<SubredditRanking> findAllByNameOrderByDate(String name);
+    List<SubredditRanking> findAllByNameOrderByDateDesc(String name);
 
     @Query(value = "SELECT a.name, (AVG(IFNULL(comments / posts, comments)) / b.activity * 100) - 100 AS growth " +
             "FROM subreddit_ranking a LEFT JOIN " +

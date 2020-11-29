@@ -11,6 +11,7 @@ import trenddit.util.DateUtil;
 
 import javax.persistence.Tuple;
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,9 +39,10 @@ public class SubredditRankingService {
         return subredditRankingRepository.existsById(new SubredditRankingPK(subredditName, DateUtil.ago(0)));
     }
 
-    public List<SubredditRanking> getSubredditMetricGrowthOverTime(String subredditName) {
-        List<SubredditRanking> metricGrowth = subredditRankingRepository.findAllByNameOrderByDate(subredditName);
-        return metricGrowth.subList(metricGrowth.size() - 30, metricGrowth.size());
+    public List<SubredditRanking> getSubredditMetricGrowthOverLastMonth(String subredditName) {
+        return subredditRankingRepository.findAllByNameOrderByDateDesc(subredditName)
+                .stream().limit(31).sorted(Comparator.comparing(SubredditRanking::getDate))
+                .collect(Collectors.toList());
     }
 
     public List<SubredditMetric> getMetricList(Metric metric, Integer fromDays, Integer limit, boolean filterByTop1000) {
