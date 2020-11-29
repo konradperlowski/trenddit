@@ -11,14 +11,10 @@ public class SubredditInfo {
     private String url;
     private String description;
     private Date createdAt;
-    private Integer subscribers;
-    private Integer subscriberRank;
-    private Integer commentsPerDay;
-    private Integer commentsPerDayRank;
-    private Integer postsPerDay;
-    private Integer postsPerDayRank;
-    private Integer growthToday;
-    private Integer growthTodayRank;
+    private SubredditRankedMetric subscribers;
+    private SubredditRankedMetric comments;
+    private SubredditRankedMetric posts;
+    private SubredditRankedMetric growth;
     private Integer growthWeek;
     private Integer growthMonth;
     private Integer averageCommentsToPosts;
@@ -57,68 +53,36 @@ public class SubredditInfo {
         this.createdAt = createdAt;
     }
 
-    public Integer getSubscribers() {
+    public SubredditRankedMetric getSubscribers() {
         return subscribers;
     }
 
-    public void setSubscribers(Integer subscribers) {
+    public void setSubscribers(SubredditRankedMetric subscribers) {
         this.subscribers = subscribers;
     }
 
-    public Integer getSubscriberRank() {
-        return subscriberRank;
+    public SubredditRankedMetric getComments() {
+        return comments;
     }
 
-    public void setSubscriberRank(Integer subscriberRank) {
-        this.subscriberRank = subscriberRank;
+    public void setComments(SubredditRankedMetric comments) {
+        this.comments = comments;
     }
 
-    public Integer getCommentsPerDay() {
-        return commentsPerDay;
+    public SubredditRankedMetric getPosts() {
+        return posts;
     }
 
-    public void setCommentsPerDay(Integer commentsPerDay) {
-        this.commentsPerDay = commentsPerDay;
+    public void setPosts(SubredditRankedMetric posts) {
+        this.posts = posts;
     }
 
-    public Integer getCommentsPerDayRank() {
-        return commentsPerDayRank;
+    public SubredditRankedMetric getGrowth() {
+        return growth;
     }
 
-    public void setCommentsPerDayRank(Integer commentsPerDayRank) {
-        this.commentsPerDayRank = commentsPerDayRank;
-    }
-
-    public Integer getPostsPerDay() {
-        return postsPerDay;
-    }
-
-    public void setPostsPerDay(Integer postsPerDay) {
-        this.postsPerDay = postsPerDay;
-    }
-
-    public Integer getPostsPerDayRank() {
-        return postsPerDayRank;
-    }
-
-    public void setPostsPerDayRank(Integer postsPerDayRank) {
-        this.postsPerDayRank = postsPerDayRank;
-    }
-
-    public Integer getGrowthToday() {
-        return growthToday;
-    }
-
-    public void setGrowthToday(Integer growthToday) {
-        this.growthToday = growthToday;
-    }
-
-    public Integer getGrowthTodayRank() {
-        return growthTodayRank;
-    }
-
-    public void setGrowthTodayRank(Integer growthTodayRank) {
-        this.growthTodayRank = growthTodayRank;
+    public void setGrowth(SubredditRankedMetric growth) {
+        this.growth = growth;
     }
 
     public Integer getGrowthWeek() {

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import trenddit.bean.Metric;
 import trenddit.bean.SubredditInfo;
 import trenddit.bean.SubredditPost;
-import trenddit.bean.SubredditRankedMetric;
 import trenddit.service.SubredditRankingService;
 import trenddit.util.DateUtil;
 
@@ -43,21 +42,10 @@ public class RedditOperations {
         subredditInfo.setAverageCommentsToPosts(
                 subredditRankingService.getSubredditAverageActivity(subreddit.getName()).getNumber());
 
-        SubredditRankedMetric subscriberRank = subredditRankingService.getRankedMetric(subreddit.getName(), Metric.SUBSCRIBER, 1);
-        subredditInfo.setSubscribers(subscriberRank.getNumber());
-        subredditInfo.setSubscriberRank(subscriberRank.getRank());
-
-        SubredditRankedMetric commentsRank = subredditRankingService.getRankedMetric(subreddit.getName(), Metric.COMMENT, 30);
-        subredditInfo.setCommentsPerDay(commentsRank.getNumber());
-        subredditInfo.setCommentsPerDayRank(commentsRank.getRank());
-
-        SubredditRankedMetric postsRank = subredditRankingService.getRankedMetric(subreddit.getName(), Metric.POST, 30);
-        subredditInfo.setPostsPerDay(postsRank.getNumber());
-        subredditInfo.setPostsPerDayRank(postsRank.getRank());
-
-        SubredditRankedMetric growthRank = subredditRankingService.getRankedMetric(subreddit.getName(), Metric.SUBSCRIBER_GROWTH, 1);
-        subredditInfo.setGrowthToday(growthRank.getNumber());
-        subredditInfo.setGrowthTodayRank(growthRank.getRank());
+        subredditInfo.setSubscribers(subredditRankingService.getRankedMetric(subreddit.getName(), Metric.SUBSCRIBER, 1));
+        subredditInfo.setComments(subredditRankingService.getRankedMetric(subreddit.getName(), Metric.COMMENT, 30));
+        subredditInfo.setPosts(subredditRankingService.getRankedMetric(subreddit.getName(), Metric.POST, 30));
+        subredditInfo.setGrowth(subredditRankingService.getRankedMetric(subreddit.getName(), Metric.SUBSCRIBER_GROWTH, 1));
 
         subredditInfo.setGrowthWeek(subredditRankingService.getSubredditGrowth(subreddit.getName(), 7).getNumber());
         subredditInfo.setGrowthMonth(subredditRankingService.getSubredditGrowth(subreddit.getName(), 30).getNumber());

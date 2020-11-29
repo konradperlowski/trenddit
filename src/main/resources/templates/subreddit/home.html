@@ -18,11 +18,11 @@
              title="Total number of subreddit's subscribers">
             <div class="mr-3">
                 <h6>Subscribers</h6>
-                <p class="text-center" th:text="${subreddit.subscribers}"></p>
+                <p class="text-center" th:text="${subreddit.subscribers.number}"></p>
             </div>
             <div>
                 <h6>Rank</h6>
-                <p class="text-center" th:text="${subreddit.subscriberRank}"></p>
+                <p class="text-center" th:text="${subreddit.subscribers.rank}"></p>
             </div>
         </div>
 
@@ -30,11 +30,11 @@
              title="Average number of comments from last month">
             <div class="mr-3">
                 <h6>Comments per day</h6>
-                <p class="text-center" th:text="${subreddit.commentsPerDay}"></p>
+                <p class="text-center" th:text="${subreddit.comments.number}"></p>
             </div>
             <div>
                 <h6>Rank</h6>
-                <p class="text-center" th:text="${subreddit.commentsPerDayRank}"></p>
+                <p class="text-center" th:text="${subreddit.comments.rank}"></p>
             </div>
         </div>
 
@@ -42,11 +42,11 @@
              title="Average number of posts from last month">
             <div class="mr-3">
                 <h6>Posts per day</h6>
-                <p class="text-center" th:text="${subreddit.postsPerDay}"></p>
+                <p class="text-center" th:text="${subreddit.posts.number}"></p>
             </div>
             <div>
                 <h6>Rank</h6>
-                <p class="text-center" th:text="${subreddit.postsPerDayRank}"></p>
+                <p class="text-center" th:text="${subreddit.posts.rank}"></p>
             </div>
         </div>
 
@@ -54,11 +54,11 @@
              title="Subscribers growth from last day">
             <div class="mr-3">
                 <h6>Growth today</h6>
-                <p class="text-center" th:text="${subreddit.growthToday}"></p>
+                <p class="text-center" th:text="${subreddit.growth.number}"></p>
             </div>
             <div>
                 <h6>Rank</h6>
-                <p class="text-center" th:text="${subreddit.growthTodayRank}"></p>
+                <p class="text-center" th:text="${subreddit.growth.rank}"></p>
             </div>
         </div>
     </div>
