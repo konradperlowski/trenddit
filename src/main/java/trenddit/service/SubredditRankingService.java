@@ -38,11 +38,6 @@ public class SubredditRankingService {
         return subredditRankingRepository.existsById(new SubredditRankingPK(subredditName, DateUtil.ago(0)));
     }
 
-    public SubredditMetric getSubredditAverageActivity(String subredditName) {
-        return mapToSubredditMetric(subredditRankingRepository.findSubredditAverageActivity(
-                subredditName, DateUtil.daysAgo(31), DateUtil.daysAgo(1)));
-    }
-
     public List<SubredditRanking> getSubredditMetricGrowthOverTime(String subredditName) {
         List<SubredditRanking> metricGrowth = subredditRankingRepository.findAllByNameOrderByDate(subredditName);
         return metricGrowth.subList(metricGrowth.size() - 30, metricGrowth.size());

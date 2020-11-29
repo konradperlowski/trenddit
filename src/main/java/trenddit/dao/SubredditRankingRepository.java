@@ -62,15 +62,5 @@ public interface SubredditRankingRepository extends CrudRepository<SubredditRank
             @Param("date_from") String from
     );
 
-    @Query(value = "SELECT name, AVG(IFNULL(comments / posts, comments)) AS activity " +
-            "FROM subreddit_ranking " +
-            "WHERE date BETWEEN :from AND :to AND name = :subreddit",
-            nativeQuery = true)
-    Tuple findSubredditAverageActivity(
-            @Param("subreddit") String subreddit,
-            @Param("from") String from,
-            @Param("to") String to
-    );
-
     List<SubredditRanking> findTop1000ByDateOrderByCommentsDesc(Date date);
 }

@@ -39,8 +39,6 @@ public class RedditOperations {
         subredditInfo.setUrl(subreddit.getUrl());
         subredditInfo.setDescription(subreddit.getPublicDescription());
         subredditInfo.setCreatedAt(subreddit.getCreated());
-        subredditInfo.setAverageCommentsToPosts(
-                subredditRankingService.getSubredditAverageActivity(subreddit.getName()).getNumber());
 
         subredditInfo.setSubscribers(subredditRankingService.getRankedMetric(subreddit.getName(), Metric.SUBSCRIBER, 1));
         subredditInfo.setComments(subredditRankingService.getRankedMetric(subreddit.getName(), Metric.COMMENT, 30));
@@ -55,6 +53,9 @@ public class RedditOperations {
                         .filter(subredditRanking ->
                                 !DateUtil.dateToString(subredditRanking.getDate()).equals(DateUtil.daysAgo(0)))
                         .collect(Collectors.toList()));
+        subredditInfo.setAverageCommentsToPosts((int) subredditInfo.getSubredditMetricGrowth().stream()
+                .mapToDouble(s -> s.getPosts() == 0 ? s.getComments() : (double) s.getComments() / s.getPosts())
+                .average().orElse(0.0));
 
         DefaultPaginator<Submission> paginator = redditClient.subreddit(subreddit.getName()).posts()
                 .sorting(SubredditSort.HOT)
