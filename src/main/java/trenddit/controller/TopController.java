@@ -20,9 +20,9 @@ public class TopController {
 
     @GetMapping(value = "/growing")
     public String topGrowing(Model model) {
-        model.addAttribute("growthToday", subredditRankingService.getMetricList(Metric.GROWTH, 1, 0, true));
-        model.addAttribute("growthWeek", subredditRankingService.getMetricList(Metric.GROWTH, 7, 0, true));
-        model.addAttribute("growthMonth", subredditRankingService.getMetricList(Metric.GROWTH, 30, 0, true));
+        model.addAttribute("growthToday", subredditRankingService.getMetricList(Metric.SUBSCRIBER_GROWTH, 1, 0, true));
+        model.addAttribute("growthWeek", subredditRankingService.getMetricList(Metric.SUBSCRIBER_GROWTH, 7, 0, true));
+        model.addAttribute("growthMonth", subredditRankingService.getMetricList(Metric.SUBSCRIBER_GROWTH, 30, 0, true));
         return "top/growing";
     }
 
@@ -55,7 +55,7 @@ public class TopController {
 
     @GetMapping("/activity")
     public String topActivity(Model model) {
-        model.addAttribute("activityList", subredditRankingService.getSubredditsActivityGrowth());
+        model.addAttribute("activityList", subredditRankingService.getMetricList(Metric.ACTIVITY_GROWTH, 31, 0, true));
         return "top/activity";
     }
 }

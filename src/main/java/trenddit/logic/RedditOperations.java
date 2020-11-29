@@ -41,21 +41,21 @@ public class RedditOperations {
         subredditInfo.setDescription(subreddit.getPublicDescription());
         subredditInfo.setCreatedAt(subreddit.getCreated());
         subredditInfo.setAverageCommentsToPosts(
-                subredditRankingService.getSubredditAverageActivity(subreddit.getName()).getNumber().intValue());
+                subredditRankingService.getSubredditAverageActivity(subreddit.getName()).getNumber());
 
-        SubredditRankedMetric subscriberRank = subredditRankingService.getMetricRankedList(subreddit.getName(), Metric.SUBSCRIBER, 1);
+        SubredditRankedMetric subscriberRank = subredditRankingService.getRankedMetric(subreddit.getName(), Metric.SUBSCRIBER, 1);
         subredditInfo.setSubscribers(subscriberRank.getNumber());
         subredditInfo.setSubscriberRank(subscriberRank.getRank());
 
-        SubredditRankedMetric commentsRank = subredditRankingService.getMetricRankedList(subreddit.getName(), Metric.COMMENT, 30);
+        SubredditRankedMetric commentsRank = subredditRankingService.getRankedMetric(subreddit.getName(), Metric.COMMENT, 30);
         subredditInfo.setCommentsPerDay(commentsRank.getNumber());
         subredditInfo.setCommentsPerDayRank(commentsRank.getRank());
 
-        SubredditRankedMetric postsRank = subredditRankingService.getMetricRankedList(subreddit.getName(), Metric.POST, 30);
+        SubredditRankedMetric postsRank = subredditRankingService.getRankedMetric(subreddit.getName(), Metric.POST, 30);
         subredditInfo.setPostsPerDay(postsRank.getNumber());
         subredditInfo.setPostsPerDayRank(postsRank.getRank());
 
-        SubredditRankedMetric growthRank = subredditRankingService.getMetricRankedList(subreddit.getName(), Metric.GROWTH, 1);
+        SubredditRankedMetric growthRank = subredditRankingService.getRankedMetric(subreddit.getName(), Metric.SUBSCRIBER_GROWTH, 1);
         subredditInfo.setGrowthToday(growthRank.getNumber());
         subredditInfo.setGrowthTodayRank(growthRank.getRank());
 
@@ -63,7 +63,7 @@ public class RedditOperations {
         subredditInfo.setGrowthMonth(subredditRankingService.getSubredditGrowth(subreddit.getName(), 30).getNumber());
 
         subredditInfo.setSubredditMetricGrowth(
-                subredditRankingService.getSubredditMetricGrowthOverTime(subreddit.getName(), 31).stream()
+                subredditRankingService.getSubredditMetricGrowthOverTime(subreddit.getName()).stream()
                         .filter(subredditRanking ->
                                 !DateUtil.dateToString(subredditRanking.getDate()).equals(DateUtil.daysAgo(0)))
                         .collect(Collectors.toList()));

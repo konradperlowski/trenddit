@@ -49,15 +49,17 @@ public interface SubredditRankingRepository extends CrudRepository<SubredditRank
             @Param("today") String today,
             @Param("date_from") String from);
 
-    List<SubredditRanking> findAllByNameOrderByDateDesc(String name);
+    List<SubredditRanking> findAllByNameOrderByDate(String name);
 
-    @Query(value = "SELECT name, AVG(IFNULL(comments / posts, comments)) AS activity " +
-            "FROM subreddit_ranking " +
-            "WHERE date BETWEEN :from AND :to GROUP BY name",
+    @Query(value = "SELECT a.name, (AVG(IFNULL(comments / posts, comments)) / b.activity * 100) - 100 AS growth " +
+            "FROM subreddit_ranking a LEFT JOIN " +
+            "(SELECT name, AVG(IFNULL(comments / posts, comments)) AS activity " +
+            "FROM subreddit_ranking WHERE date BETWEEN :date_from AND :today GROUP BY name) b " +
+            "ON a.name = b.name WHERE date BETWEEN :today AND :today GROUP BY a.name ORDER BY growth DESC",
             nativeQuery = true)
-    List<Tuple> findSubredditsActivity(
-            @Param("from") String from,
-            @Param("to") String to
+    List<Tuple> findSubredditsActivityGrowth(
+            @Param("today") String today,
+            @Param("date_from") String from
     );
 
     @Query(value = "SELECT name, AVG(IFNULL(comments / posts, comments)) AS activity " +

@@ -1,5 +1,5 @@
 package trenddit.bean;
 
 public enum Metric {
-    COMMENT, POST, GROWTH, SUBSCRIBER
+    COMMENT, POST, SUBSCRIBER_GROWTH, SUBSCRIBER, ACTIVITY_GROWTH
 }

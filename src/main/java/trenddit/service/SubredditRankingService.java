@@ -2,7 +2,6 @@ package trenddit.service;
 
 import org.springframework.stereotype.Service;
 import trenddit.bean.Metric;
-import trenddit.bean.SubredditDoubleMetric;
 import trenddit.bean.SubredditMetric;
 import trenddit.bean.SubredditRankedMetric;
 import trenddit.dao.SubredditRankingRepository;
@@ -12,10 +11,10 @@ import trenddit.util.DateUtil;
 
 import javax.persistence.Tuple;
 import java.math.BigDecimal;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class SubredditRankingService {
@@ -35,62 +34,28 @@ public class SubredditRankingService {
                 subredditName, DateUtil.daysAgo(0), DateUtil.daysAgo(days), days));
     }
 
-    public SubredditRankedMetric getMetricRankedList(String subredditName, Metric metric, Integer days) {
-        List<SubredditMetric> subredditsGrowth = getMetricList(metric, days, 0, false);
-        if (subredditsGrowth == null) return null;
-        final int[] i = {1};
-        List<SubredditRankedMetric> subredditsGrowthRanked = subredditsGrowth.stream()
-                .map(subreddit -> new SubredditRankedMetric(
-                        subreddit.getName(),
-                        subreddit.getNumber(),
-                        i[0]++)).collect(Collectors.toList());
-        return subredditsGrowthRanked.stream()
-                .filter(subreddit -> subreddit.getName().equals(subredditName))
-                .findAny().orElse(null);
-    }
-
-    public List<SubredditRanking> getSubredditMetricGrowthOverTime(String subredditName, Integer limit) {
-        return subredditRankingRepository.findAllByNameOrderByDateDesc(subredditName)
-                .stream().limit(limit).sorted(Comparator.comparing(SubredditRanking::getDate))
-                .collect(Collectors.toList());
-    }
-
     public boolean isSubredditInDb(String subredditName) {
         return subredditRankingRepository.existsById(new SubredditRankingPK(subredditName, DateUtil.ago(0)));
     }
 
-    public List<SubredditMetric> getSubredditsActivityGrowth() {
-        List<SubredditDoubleMetric> lastMonthActivity = mapToSubredditDoubleMetric(
-                subredditRankingRepository.findSubredditsActivity(DateUtil.daysAgo(31), DateUtil.daysAgo(1)));
-        List<SubredditDoubleMetric> yesterdayActivity = mapToSubredditDoubleMetric(
-                subredditRankingRepository.findSubredditsActivity(DateUtil.daysAgo(1), DateUtil.daysAgo(1)));
-
-        return yesterdayActivity.stream()
-                .map(s -> new SubredditMetric(s.getName(), (int) (s.getNumber() / lastMonthActivity.stream()
-                        .filter(ss -> ss.getName().equals(s.getName()))
-                        .findFirst()
-                        .orElse(new SubredditDoubleMetric(s.getName(), 1.)).getNumber() * 100) - 100))
-                .sorted(Comparator.comparing(SubredditMetric::getNumber).reversed())
-                .filter(s -> !Double.isNaN(s.getNumber()))
-                .filter(s -> top1000.contains(s.getName()))
-                .collect(Collectors.toList());
-    }
-
-    public SubredditDoubleMetric getSubredditAverageActivity(String subredditName) {
-        return mapToSubredditDoubleMetric(subredditRankingRepository.findSubredditAverageActivity(
+    public SubredditMetric getSubredditAverageActivity(String subredditName) {
+        return mapToSubredditMetric(subredditRankingRepository.findSubredditAverageActivity(
                 subredditName, DateUtil.daysAgo(31), DateUtil.daysAgo(1)));
     }
 
-    public List<SubredditMetric> getMetricList(Metric metric, Integer fromDays,
-                                               Integer limit, boolean filterByTop1000) {
+    public List<SubredditRanking> getSubredditMetricGrowthOverTime(String subredditName) {
+        List<SubredditRanking> metricGrowth = subredditRankingRepository.findAllByNameOrderByDate(subredditName);
+        return metricGrowth.subList(metricGrowth.size() - 30, metricGrowth.size());
+    }
+
+    public List<SubredditMetric> getMetricList(Metric metric, Integer fromDays, Integer limit, boolean filterByTop1000) {
         limit = limit == 0 ? 9999 : limit;
         List<SubredditMetric> toReturn;
         switch (metric) {
-            case GROWTH:
+            case SUBSCRIBER_GROWTH:
                 toReturn = mapToSubredditMetric(subredditRankingRepository.findSubredditsGrowth(
-                        DateUtil.daysAgo(0), DateUtil.daysAgo(fromDays), fromDays)).stream()
-                        .sorted((Comparator.comparing(SubredditMetric::getNumber)).reversed())
-                        .collect(Collectors.toList());
+                        DateUtil.daysAgo(0), DateUtil.daysAgo(fromDays),
+                        fromDays));
                 break;
             case COMMENT:
                 toReturn = mapToSubredditMetric(subredditRankingRepository.findAverageComments(
@@ -105,31 +70,30 @@ public class SubredditRankingService {
                         .map(subreddit -> new SubredditMetric(subreddit.getName(), subreddit.getSubscribers()))
                         .collect(Collectors.toList());
                 break;
+            case ACTIVITY_GROWTH:
+                toReturn = mapToSubredditMetric(subredditRankingRepository.findSubredditsActivityGrowth(
+                        DateUtil.daysAgo(1), DateUtil.daysAgo(fromDays)));
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + metric);
         }
-        return toReturn.stream()
-                .filter(s -> !filterByTop1000 || top1000.contains(s.getName()))
+        return toReturn.stream().filter(s -> !filterByTop1000 || top1000.contains(s.getName()))
                 .limit(limit).collect(Collectors.toList());
     }
 
+    public SubredditRankedMetric getRankedMetric(String subredditName, Metric metric, Integer days) {
+        List<SubredditMetric> metricList = getMetricList(metric, days, 0, false);
+        int index = IntStream.range(0, metricList.size()).filter(i -> metricList.get(i).getName().equals(subredditName))
+                .findFirst().orElse(-1);
+        return new SubredditRankedMetric(subredditName, metricList.get(index).getNumber(), index + 1);
+    }
+
     private SubredditMetric mapToSubredditMetric(Tuple tuple) {
-        return new SubredditMetric(
-                (String) tuple.get(0),
+        return new SubredditMetric((String) tuple.get(0),
                 tuple.get(1) == null ? 0 : ((BigDecimal) tuple.get(1)).intValue());
     }
 
     private List<SubredditMetric> mapToSubredditMetric(List<Tuple> tupleList) {
         return tupleList.stream().map(this::mapToSubredditMetric).collect(Collectors.toList());
-    }
-
-    private SubredditDoubleMetric mapToSubredditDoubleMetric(Tuple tuple) {
-        return new SubredditDoubleMetric(
-                (String) tuple.get(0),
-                tuple.get(1) == null ? 0. : ((BigDecimal) tuple.get(1)).doubleValue());
-    }
-
-    private List<SubredditDoubleMetric> mapToSubredditDoubleMetric(List<Tuple> tupleList) {
-        return tupleList.stream().map(this::mapToSubredditDoubleMetric).collect(Collectors.toList());
     }
 }
