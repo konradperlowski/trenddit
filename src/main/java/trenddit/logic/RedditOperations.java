@@ -10,7 +10,6 @@ import trenddit.bean.SubredditPost;
 import trenddit.service.SubredditRankingService;
 import trenddit.util.DateUtil;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -18,18 +17,18 @@ public class RedditOperations {
 
     private final RedditClient redditClient;
 
-    private final SubredditRankingService subredditRankingService;
+    private final SubredditRankingService subredditService;
 
-    public RedditOperations(RedditClient redditClient, SubredditRankingService subredditRankingService) {
+    public RedditOperations(RedditClient redditClient, SubredditRankingService subredditService) {
         this.redditClient = redditClient;
-        this.subredditRankingService = subredditRankingService;
+        this.subredditService = subredditService;
     }
 
     public SubredditInfo getSubredditInfo(String subredditName) {
         Subreddit subreddit;
         try {
             subreddit = redditClient.subreddit(subredditName).about();
-            if (!subredditRankingService.isSubredditInDb(subredditName))
+            if (!subredditService.isSubredditInDb(subredditName))
                 return null;
         } catch (Exception e) {
             return null;
@@ -40,16 +39,16 @@ public class RedditOperations {
         subredditInfo.setDescription(subreddit.getPublicDescription());
         subredditInfo.setCreatedAt(subreddit.getCreated());
 
-        subredditInfo.setSubscribers(subredditRankingService.getRankedMetric(subreddit.getName(), Metric.SUBSCRIBER, 1));
-        subredditInfo.setComments(subredditRankingService.getRankedMetric(subreddit.getName(), Metric.COMMENT, 30));
-        subredditInfo.setPosts(subredditRankingService.getRankedMetric(subreddit.getName(), Metric.POST, 30));
-        subredditInfo.setGrowth(subredditRankingService.getRankedMetric(subreddit.getName(), Metric.SUBSCRIBER_GROWTH, 1));
+        subredditInfo.setSubscribers(subredditService.getRankedMetric(subreddit.getName(), Metric.SUBSCRIBER, 1));
+        subredditInfo.setComments(subredditService.getRankedMetric(subreddit.getName(), Metric.COMMENT, 30));
+        subredditInfo.setPosts(subredditService.getRankedMetric(subreddit.getName(), Metric.POST, 30));
+        subredditInfo.setGrowth(subredditService.getRankedMetric(subreddit.getName(), Metric.SUBSCRIBER_GROWTH, 1));
 
-        subredditInfo.setGrowthWeek(subredditRankingService.getSubredditGrowth(subreddit.getName(), 7).getNumber());
-        subredditInfo.setGrowthMonth(subredditRankingService.getSubredditGrowth(subreddit.getName(), 30).getNumber());
+        subredditInfo.setGrowthWeek(subredditService.getSubredditGrowth(subreddit.getName(), 7).getNumber());
+        subredditInfo.setGrowthMonth(subredditService.getSubredditGrowth(subreddit.getName(), 30).getNumber());
 
         subredditInfo.setSubredditMetricGrowth(
-                subredditRankingService.getSubredditMetricGrowthOverLastMonth(subreddit.getName()).stream()
+                subredditService.getMetricGrowth(subreddit.getName()).stream()
                         .filter(subredditRanking ->
                                 !DateUtil.dateToString(subredditRanking.getDate()).equals(DateUtil.daysAgo(0)))
                         .collect(Collectors.toList()));
@@ -57,18 +56,12 @@ public class RedditOperations {
                 .mapToDouble(s -> s.getPosts() == 0 ? s.getComments() : (double) s.getComments() / s.getPosts())
                 .average().orElse(0.0));
 
-        DefaultPaginator<Submission> paginator = redditClient.subreddit(subreddit.getName()).posts()
-                .sorting(SubredditSort.HOT)
-                .build();
+        DefaultPaginator<Submission> hotPaginator = redditClient.subreddit(subreddit.getName()).posts()
+                .sorting(SubredditSort.HOT).build();
 
-        subredditInfo.setBestSubmissions(convertToSubredditPost(paginator.next()));
-        return subredditInfo;
-    }
-
-    private List<SubredditPost> convertToSubredditPost(Listing<Submission> submissionListing) {
-        return submissionListing.stream()
+        subredditInfo.setBestSubmissions(hotPaginator.next().stream().limit(5)
                 .map(s -> new SubredditPost(s.getTitle(), s.getPermalink(), s.getScore()))
-                .limit(5)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+        return subredditInfo;
     }
 }

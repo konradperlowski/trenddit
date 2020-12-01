@@ -11,40 +11,40 @@ import trenddit.service.SubredditRankingService;
 @RequestMapping("/top")
 public class TopController {
 
-    private final SubredditRankingService subredditRankingService;
+    private final SubredditRankingService subredditService;
 
-    public TopController(SubredditRankingService subredditRankingService) {
-        this.subredditRankingService = subredditRankingService;
+    public TopController(SubredditRankingService subredditService) {
+        this.subredditService = subredditService;
     }
 
 
     @GetMapping(value = "/growing")
     public String topGrowing(Model model) {
-        model.addAttribute("growthToday", subredditRankingService.getMetricList(Metric.SUBSCRIBER_GROWTH, 1, 0, true));
-        model.addAttribute("growthWeek", subredditRankingService.getMetricList(Metric.SUBSCRIBER_GROWTH, 7, 0, true));
-        model.addAttribute("growthMonth", subredditRankingService.getMetricList(Metric.SUBSCRIBER_GROWTH, 30, 0, true));
+        model.addAttribute("growthToday", subredditService.getMetricList(Metric.SUBSCRIBER_GROWTH, 1, 0, true));
+        model.addAttribute("growthWeek", subredditService.getMetricList(Metric.SUBSCRIBER_GROWTH, 7, 0, true));
+        model.addAttribute("growthMonth", subredditService.getMetricList(Metric.SUBSCRIBER_GROWTH, 30, 0, true));
         return "top/growing";
     }
 
     @GetMapping("/comments")
     public String topComments(Model model) {
-        model.addAttribute("commentsToday", subredditRankingService.getMetricList(Metric.COMMENT, 1, 0, true));
-        model.addAttribute("commentsWeek", subredditRankingService.getMetricList(Metric.COMMENT, 7, 0, true));
-        model.addAttribute("commentsMonth", subredditRankingService.getMetricList(Metric.COMMENT, 30, 0, true));
+        model.addAttribute("commentsToday", subredditService.getMetricList(Metric.COMMENT, 1, 0, true));
+        model.addAttribute("commentsWeek", subredditService.getMetricList(Metric.COMMENT, 7, 0, true));
+        model.addAttribute("commentsMonth", subredditService.getMetricList(Metric.COMMENT, 30, 0, true));
         return "top/comments";
     }
 
     @GetMapping("/posts")
     public String topPosts(Model model) {
-        model.addAttribute("postsToday", subredditRankingService.getMetricList(Metric.POST, 1, 0, true));
-        model.addAttribute("postsWeek", subredditRankingService.getMetricList(Metric.POST, 7, 0, true));
-        model.addAttribute("postsMonth", subredditRankingService.getMetricList(Metric.POST, 30, 0, true));
+        model.addAttribute("postsToday", subredditService.getMetricList(Metric.POST, 1, 0, true));
+        model.addAttribute("postsWeek", subredditService.getMetricList(Metric.POST, 7, 0, true));
+        model.addAttribute("postsMonth", subredditService.getMetricList(Metric.POST, 30, 0, true));
         return "top/posts";
     }
 
     @GetMapping("/subreddits")
     public String topSubreddits(Model model) {
-        model.addAttribute("subscribersList", subredditRankingService.getMetricList(Metric.SUBSCRIBER, 0, 0, true));
+        model.addAttribute("subscribersList", subredditService.getMetricList(Metric.SUBSCRIBER, 0, 0, true));
         return "top/subreddits";
     }
 
@@ -55,7 +55,7 @@ public class TopController {
 
     @GetMapping("/activity")
     public String topActivity(Model model) {
-        model.addAttribute("activityList", subredditRankingService.getMetricList(Metric.ACTIVITY_GROWTH, 31, 0, true));
+        model.addAttribute("activityList", subredditService.getMetricList(Metric.ACTIVITY_GROWTH, 31, 0, true));
         return "top/activity";
     }
 }

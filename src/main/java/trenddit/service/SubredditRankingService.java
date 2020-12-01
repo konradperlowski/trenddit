@@ -39,7 +39,7 @@ public class SubredditRankingService {
         return subredditRankingRepository.existsById(new SubredditRankingPK(subredditName, DateUtil.ago(0)));
     }
 
-    public List<SubredditRanking> getSubredditMetricGrowthOverLastMonth(String subredditName) {
+    public List<SubredditRanking> getMetricGrowth(String subredditName) {
         return subredditRankingRepository.findAllByNameOrderByDateDesc(subredditName)
                 .stream().limit(31).sorted(Comparator.comparing(SubredditRanking::getDate))
                 .collect(Collectors.toList());
