@@ -1,4 +1,4 @@
 matplotlib==3.3.2
-requests==2.24.0
+requests==2.31.0
 praw==7.1.0
 mysql-connector-python==8.0.22
